@@ -12,16 +12,34 @@
 #     jobs:
 #       - welcome/run
 
+# dependencies:
+#   pre:
+#     - go get github.com/tcnksm/ghr
+
+# compile:
+#   override:
+#     - ant package
+
+# deployment:
+#   release:
+#     tag: /(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)/
+#     commands:
+#       - ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME --replace `git describe --tags` output/
+
+machine:
+  node:
+    version: 6.2.0
+   environment:
+      PROJECT_NAME: {INSERT PROJECT NAME}
 dependencies:
   pre:
-    - go get github.com/tcnksm/ghr
-
-compile:
-  override:
-    - ant package
-
+    - go get github.com/aktau/github-release
+    - npm install github-release-notes -g
 deployment:
   release:
-    tag: /(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)/
+    tag: /v[0-9]+(\.[0-9]+)*/
     commands:
-      - ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME --replace `git describe --tags` output/
+      - zip -r $CIRCLE_ARTIFACTS/$PROJECT_NAME-$CIRCLE_TAG.zip dist/*
+      - git config user.name $CIRCLE_PROJECT_USERNAME
+      - gren --override --data-source=commits
+      - github-release upload --user $CIRCLE_PROJECT_USERNAME --repo $CIRCLE_PROJECT_REPONAME --tag $CIRCLE_TAG --name $CIRCLE_PROJECT_REPONAME"."$CIRCLE_TAG"-build-"$CIRCLE_BUILD_NUM".zip" --file $CIRCLE_ARTIFACTS/$PROJECT_NAME-$CIRCLE_TAG.zip
