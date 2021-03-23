@@ -30,7 +30,7 @@ machine:
   node:
     version: 6.2.0
    environment:
-      PROJECT_NAME: {INSERT PROJECT NAME}
+      PROJECT_NAME: servian
 dependencies:
   pre:
     - go get github.com/aktau/github-release
