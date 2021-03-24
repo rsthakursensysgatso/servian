@@ -69,7 +69,7 @@ jobs:
           description: This release is version vX.YY.ZZ .
           file-path: ./artifacts/file
           pre-release: true
-          title: "Deployed pre-release"
+#          title: "Deployed pre-release"
 #       - run:
 #           command: |
 #             github-release release \
