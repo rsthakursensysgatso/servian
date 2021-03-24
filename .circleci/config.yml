@@ -64,11 +64,12 @@ jobs:
             mkdir artifacts
             echo dummy > ./artifacts/file
       - github-release/create:
-          tag: vX.Y.ZZ
-          title: Version vX.Y.ZZ
-          description: This release is version vX.Y.ZZ .
+          tag: vX.YY.ZZ
+          title: Version vX.YY.ZZ
+          description: This release is version vX.YY.ZZ .
           file-path: ./artifacts/file
           pre-release: true
+          release_message: "Deployed pre-release"
 #       - run:
 #           command: |
 #             github-release release \
