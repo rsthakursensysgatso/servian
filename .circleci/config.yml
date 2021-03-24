@@ -37,14 +37,35 @@
 #       image: windows-server-2019-nvidia:stable
 #       docker_layer_caching: true    # default - false
 
+# version: 2.1
+
+# orbs:
+#   win: circleci/windows@2.3.0
+
+# jobs:
+#   build:
+#     executor: win/default
+#     steps:
+#       - checkout
+#       - run: echo 'Hello, Windows'
+
+
+
 version: 2.1
-
 orbs:
-  win: circleci/windows@2.3.0
-
+  github-release: h-matsuo/github-release@0.1.1
 jobs:
   build:
-    executor: win/default
+    description: Create dummy file and publish a new release tagged `vX.Y.Z`.
+    executor: github-release/default
     steps:
-      - checkout
-      - run: echo 'Hello, Windows'
+      - run:
+          command: |
+            mkdir artifacts
+            echo dummy > ./artifacts/file
+      - github-release/create:
+          tag: vX.Y.Z
+          title: Version vX.Y.Z
+          description: This release is version vX.Y.Z .
+          file-path: ./artifacts/file
+
