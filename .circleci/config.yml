@@ -78,10 +78,7 @@ executors:
     working_directory: ~/repo
 orbs:
   version-control: tvx/version-control@0.1.7
-jobs:
-  release:
-    description: Publish a Github release using git tags
-    executor: default  
+
 commands:
   release:
   description: Publish a Github release using git tags
@@ -116,7 +113,11 @@ commands:
             echo "Test payload is correctly formatted as JSON"
             echo $DATA | jq type
             curl -X POST -d @data.json -H "Content-Type: application/json, Accept: application/json" $API          
-          
+
+# jobs:
+#   release:
+#     description: Publish a Github release using git tags
+#     executor: default  
 #          title: "Deployed pre-release"
 #       - run:
 #           command: |
