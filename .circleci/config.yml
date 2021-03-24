@@ -79,8 +79,8 @@ jobs:
 #               --name "<< parameters.title >>" \
 #               --description "<< parameters.description >>" \
 #               --target << parameters.target >> \
-              <<# parameters.draft >> --draft <</ parameters.draft >> \
-              <<# parameters.pre-release >> --pre-release <</ parameters.pre-release >>
+#               <<# parameters.draft >> --draft <</ parameters.draft >> \
+#               <<# parameters.pre-release >> --pre-release <</ parameters.pre-release >>
 
 
 
