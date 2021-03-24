@@ -86,9 +86,10 @@ commands:
   release:
   description: Publish a Github release using git tags
   parameters:
-    github_token: GITHUB_API_TOKEN
-    description: Your GitHub API token, defaults to GITHUB_API_TOKEN
-    type: env_var_name
+    github_token: 
+     default: GITHUB_API_TOKEN     
+     description: Your GitHub API token, defaults to GITHUB_API_TOKEN
+     type: env_var_name
   release_message:
     description: Github release message
     type: string
