@@ -64,9 +64,24 @@ jobs:
             mkdir artifacts
             echo dummy > ./artifacts/file
       - github-release/create:
-          tag: vX.Y.Z
-          title: Version vX.Y.Z
-          description: This release is version vX.Y.Z .
+          tag: vX.Y.ZZ
+          title: Version vX.Y.ZZ
+          description: This release is version vX.Y.ZZ .
           file-path: ./artifacts/file
           pre-release: true
+#       - run:
+#           command: |
+#             github-release release \
+#               --security-token << parameters.github-token-variable >> \
+#               --user << parameters.user >> \
+#               --repo << parameters.repository >> \
+#               --tag << parameters.tag >> \
+#               --name "<< parameters.title >>" \
+#               --description "<< parameters.description >>" \
+#               --target << parameters.target >> \
+              <<# parameters.draft >> --draft <</ parameters.draft >> \
+              <<# parameters.pre-release >> --pre-release <</ parameters.pre-release >>
+
+
+
 
