@@ -77,11 +77,12 @@ jobs:
             MINOR="$(cat ravi1 |grep Version|awk '{print $2}'|cut -d '"' -f2|cut -d '.' -f2)"
             PATCH="$(cat ravi1 |grep Version|awk '{print $2}'|cut -d '"' -f2|cut -d '.' -f3)"
             echo $MAJOR
+            SHA="$(git rev-parse --short HEAD)"
              
       - github-release/create:
-          tag: vX.YY1.ZZ
-          title: Version vX.YY1.ZZ
-          description: This release is version vX.YY1.ZZ .
+          tag: vX.YY1.ZZ-$SHA
+          title: Version vX.YY1.ZZ-$SHA
+          description: This release is version vX.YY1.ZZ-$SHA.
 #           file-path: ./artifacts/file
           pre-release: true
           
