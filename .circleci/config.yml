@@ -162,6 +162,18 @@
 
 version: 2.1
 
+orbs:
+   version-control: tvx/version-control@0.1.7
+jobs:
+   release:
+      executor: default
+      steps:
+         - checkout
+         - version-control/release
+workflows:
+  build:
+    jobs:
+      - release         
 description: |
   Create / delete GitHub's Releases.
   Issues & PRs: https://github.com/h-matsuo/circleci-orb-github-release
@@ -242,23 +254,23 @@ commands:
                     <<# parameters.pre-release >> --prerelease <</ parameters.pre-release >> \
                       << parameters.tag >> << parameters.file-path >>
 
-examples:
-  command-usage:
-    description: >
-      Auto generate tag-name, and release notes.
-      Tag name is based on date. (release 190313.1348)
-      Release notes are based on GIT commit messages since last tag. (list of commit messages)
-    usage:
-      version: 2.1
-      orbs:
-        version-control: tvx/version-control@0.1.7
-      jobs:
-        release:
-          executor: default
-          steps:
-            - checkout
-            - version-control/release
-      workflows:
-        build:
-          jobs:
-            - release
+# examples:
+#   command-usage:
+#     description: >
+#       Auto generate tag-name, and release notes.
+#       Tag name is based on date. (release 190313.1348)
+#       Release notes are based on GIT commit messages since last tag. (list of commit messages)
+#     usage:
+#       version: 2.1
+#       orbs:
+#         version-control: tvx/version-control@0.1.7
+#       jobs:
+#         release:
+#           executor: default
+#           steps:
+#             - checkout
+#             - version-control/release
+#       workflows:
+#         build:
+#           jobs:
+#             - release
