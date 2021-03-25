@@ -60,15 +60,12 @@ jobs:
     executor: github-release/default
     steps:
       - checkout
-      - run:
-          command: |
-            mkdir artifacts
-            echo dummy > ./artifacts/file
-#       - checkout 
       - run: 
           name: "Checkout the repository"
           command: |
             git clone  $CIRCLE_REPOSITORY_URL
+  release:  
+    steps:     
       - run:
           name: "Add `VERSION` environment variable to `BASH_ENV`"
           command: |
@@ -96,7 +93,17 @@ jobs:
               ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1}   ${TAG}
             fi
            
-             
+workflows:
+  version: 2
+  build_and_release:
+    jobs:
+      - release:
+          requires:
+             - build
+        
+  
+  
+
 #       - github-release/create:
 #               tag: vX.YY1.ZZ-$SHA
 #               title: Version vX.YY1.ZZ-$SHA
