@@ -51,68 +51,85 @@
 
 
 
-# version: 2.1
-# orbs:
-#   github-release: h-matsuo/github-release@0.1.1
-# jobs:
-#   build:
-#     description: Create dummy file and publish a new release tagged `vX.Y.Z`.
-#     executor: github-release/default
-#     steps:
-#       - run:
-#           command: |
-#             mkdir artifacts
-#             echo dummy > ./artifacts/file
-#       - github-release/create:
-#           tag: vX.YY.ZZ
-#           title: Version vX.YY.ZZ
-#           description: This release is version vX.YY.ZZ .
-#           file-path: ./artifacts/file
-#           pre-release: true
-          
 version: 2.1
-executors:
-  default:
-    docker:
-      - image: circleci/python:3.6.1
-    working_directory: ~/repo
 orbs:
-  version-control: tvx/version-control@0.1.7
-
-commands:
-  release:
-  description: Publish a Github release using git tags
-  parameters:
-    github_token: 
-     default: GITHUB_API_TOKEN     
-     description: Your GitHub API token, defaults to GITHUB_API_TOKEN
-     type: env_var_name
-  release_message:
-    description: Github release message
-    type: string
-    default: "thakur"  # optional
-  release_name:
-    description: GIT tag name
-    type: string
-    default: "v1thakur"  # optional    
-  release_summary:
-    default: RELEASE_SUMMARY
-    description: Text to attach to Github release message
-    type: env_var_name  # optional    
-    
+  github-release: h-matsuo/github-release@0.1.1
+jobs:
+  build:
+    description: Create dummy file and publish a new release tagged `vX.Y.Z`.
+    executor: github-release/default
     steps:
       - run:
-          name: Create release via Github API
           command: |
-            echo $RELEASE_NAME
-            echo $RELEASE_MESSAGE
-            API="https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/releases?access_token=$GITHUB_API_TOKEN"
-            DATA="{\"tag_name\": \"$RELEASE_NAME\",\"name\": \"$RELEASE_NAME\",\"body\": \"$RELEASE_MESSAGE\",\"target_commitish\": \"$CIRCLE_BRANCH\",\"draft\": false,\"prerelease\": false}"
-            echo $DATA > data.json  # easier to debug
-            cat data.json
-            echo "Test payload is correctly formatted as JSON"
-            echo $DATA | jq type
-            curl -X POST -d @data.json -H "Content-Type: application/json, Accept: application/json" $API          
+            mkdir artifacts
+            echo dummy > ./artifacts/file
+      - checkout 
+#       - run: 
+#           name: "Checkout the repository"
+#           command: |
+#             git clone --depth 5 "$CIRCLE_REPOSITORY_URL" --branch "$CIRCLE_BRANCH"
+      - run:
+          name: "Add `VERSION` environment variable to `BASH_ENV`"
+          command: |
+            RELEASE_MEAAGE="$(git describe --tags `git rev-list --tags --max-count=1` || true)"
+            MAJOR         ="$(cat ravi1 |grep Version|awk '{print $2}'|cut -d '"' -f2|cut -d '.' -f1)"
+            MINOR         ="$(cat ravi1 |grep Version|awk '{print $2}'|cut -d '"' -f2|cut -d '.' -f2)"
+            PATCH         ="$(cat ravi1 |grep Version|awk '{print $2}'|cut -d '"' -f2|cut -d '.' -f3)"
+            echo $MAJOR
+             
+      - github-release/create:
+          tag: vX.YY.ZZ
+          title: Version vX.YY.ZZ
+          description: This release is version vX.YY.ZZ .
+          tag: vX.YY1.ZZ
+          title: Version vX.YY1.ZZ
+          description: This release is version vX.YY1.ZZ .
+#           file-path: ./artifacts/file
+          pre-release: true
+          
+# version: 2.1
+# executors:
+#   default:
+#     docker:
+#       - image: circleci/python:3.6.1
+#     working_directory: ~/repo
+# orbs:
+#   version-control: tvx/version-control@0.1.7
+
+# commands:
+#   release:
+#   description: Publish a Github release using git tags
+#   parameters:
+#     github_token: 
+#      default: GITHUB_API_TOKEN     
+#      description: Your GitHub API token, defaults to GITHUB_API_TOKEN
+#      type: env_var_name
+#   release_message:
+#     description: Github release message
+#     type: string
+#     default: "thakur"  # optional
+#   release_name:
+#     description: GIT tag name
+#     type: string
+#     default: "v1thakur"  # optional    
+#   release_summary:
+#     default: RELEASE_SUMMARY
+#     description: Text to attach to Github release message
+#     type: env_var_name  # optional    
+    
+#     steps:
+#       - run:
+#           name: Create release via Github API
+#           command: |
+#             echo $RELEASE_NAME
+#             echo $RELEASE_MESSAGE
+#             API="https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/releases?access_token=$GITHUB_API_TOKEN"
+#             DATA="{\"tag_name\": \"$RELEASE_NAME\",\"name\": \"$RELEASE_NAME\",\"body\": \"$RELEASE_MESSAGE\",\"target_commitish\": \"$CIRCLE_BRANCH\",\"draft\": false,\"prerelease\": false}"
+#             echo $DATA > data.json  # easier to debug
+#             cat data.json
+#             echo "Test payload is correctly formatted as JSON"
+#             echo $DATA | jq type
+#             curl -X POST -d @data.json -H "Content-Type: application/json, Accept: application/json" $API          
 
 # jobs:
 #   release:
