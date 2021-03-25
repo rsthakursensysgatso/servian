@@ -177,7 +177,6 @@ jobs:
             create:
               description: Create a new release.
               parameters:
-                <<: *common-parameters
                 tag:
                   description: Git tag using as the version number of the release.
                   type: string
