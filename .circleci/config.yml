@@ -62,10 +62,6 @@ jobs:
     executor: github-release/default
     steps:
       - checkout
-      - run: 
-          name: "Checkout the repository"
-          command: |
-            git clone  $CIRCLE_REPOSITORY_URL
   release: 
     docker:
       - image: circleci/buildpack-deps:latest   
@@ -73,7 +69,7 @@ jobs:
       - run:
           name: "Add `VERSION` environment variable to `BASH_ENV`"
           command: |
-            git clone  $CIRCLE_REPOSITORY_URL
+            - checkout
             export RELEASE_MESSAGE="$(git describe --tags `git rev-list --tags --max-count=1` || true)"
             export MAJOR="$(cat ravi1 |grep Version|awk '{print $2}'|cut -d '"' -f2|cut -d '.' -f1)"
             export MINOR="$(cat ravi1 |grep Version|awk '{print $2}'|cut -d '"' -f2|cut -d '.' -f2)"
