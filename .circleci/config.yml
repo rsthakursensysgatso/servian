@@ -101,26 +101,25 @@ orbs:
   version-control: tvx/version-control@0.1.7
 
 commands:
-  release:
-  description: Publish a Github release using git tags
-  parameters:
-    github_token: 
-     default: GITHUB_API_TOKEN     
-     description: Your GitHub API token, defaults to GITHUB_API_TOKEN
-     type: env_var_name
-  release_message:
-    description: Github release message
-    type: string
-    default: "thakur"  # optional
-  release_name:
-    description: GIT tag name
-    type: string
-    default: "v1thakur"  # optional    
-  release_summary:
-    default: RELEASE_SUMMARY
-    description: Text to attach to Github release message
-    type: env_var_name  # optional    
-    
+    release:
+      description: Publish a Github release using git tags
+      parameters:
+        github_token: 
+         default: GITHUB_API_TOKEN     
+         description: Your GitHub API token, defaults to GITHUB_API_TOKEN
+         type: env_var_name
+      release_message:
+        description: Github release message
+        type: string
+        default: "thakur"  # optional
+      release_name:
+        description: GIT tag name
+        type: string
+        default: "v1thakur"  # optional    
+      release_summary:
+        default: RELEASE_SUMMARY
+        description: Text to attach to Github release message
+        type: env_var_name  # optional    
     steps:
       - run:
           name: Create release via Github API
