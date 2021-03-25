@@ -65,11 +65,11 @@ jobs:
   release: 
     docker:
       - image: circleci/buildpack-deps:latest   
-    steps:     
+    steps:   
+      - checkout
       - run:
           name: "Add `VERSION` environment variable to `BASH_ENV`"
           command: |
-            - checkout
             export RELEASE_MESSAGE="$(git describe --tags `git rev-list --tags --max-count=1` || true)"
             export MAJOR="$(cat ravi1 |grep Version|awk '{print $2}'|cut -d '"' -f2|cut -d '.' -f1)"
             export MINOR="$(cat ravi1 |grep Version|awk '{print $2}'|cut -d '"' -f2|cut -d '.' -f2)"
