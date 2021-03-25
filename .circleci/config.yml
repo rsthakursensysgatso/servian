@@ -80,6 +80,7 @@ jobs:
             SHA="$(git rev-parse --short HEAD)"
              
       - github-release/create:
+          echo $SHA
           tag: vX.YY1.ZZ-$SHA
           title: Version vX.YY1.ZZ-$SHA
           description: This release is version vX.YY1.ZZ-$SHA.
