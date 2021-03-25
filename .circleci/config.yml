@@ -105,34 +105,34 @@ commands:
       description: Publish a Github release using git tags
       parameters:
         github_token: 
-         default: GITHUB_API_TOKEN     
-         description: Your GitHub API token, defaults to GITHUB_API_TOKEN
-         type: env_var_name
-      release_message:
-        description: Github release message
-        type: string
-        default: "thakur"  # optional
-      release_name:
-        description: GIT tag name
-        type: string
-        default: "v1thakur"  # optional    
-      release_summary:
-        default: RELEASE_SUMMARY
-        description: Text to attach to Github release message
-        type: env_var_name  # optional    
-    steps:
-      - run:
-          name: Create release via Github API
-          command: |
-            echo $RELEASE_NAME
-            echo $RELEASE_MESSAGE
-            API="https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/releases?access_token=$GITHUB_API_TOKEN"
-            DATA="{\"tag_name\": \"$RELEASE_NAME\",\"name\": \"$RELEASE_NAME\",\"body\": \"$RELEASE_MESSAGE\",\"target_commitish\": \"$CIRCLE_BRANCH\",\"draft\": false,\"prerelease\": false}"
-            echo $DATA > data.json  # easier to debug
-            cat data.json
-            echo "Test payload is correctly formatted as JSON"
-            echo $DATA | jq type
-            curl -X POST -d @data.json -H "Content-Type: application/json, Accept: application/json" $API          
+          default: GITHUB_API_TOKEN     
+          description: Your GitHub API token, defaults to GITHUB_API_TOKEN
+          type: env_var_name
+        release_message:
+          description: Github release message
+          type: string
+          default: "thakur"  # optional
+        release_name:
+          description: GIT tag name
+          type: string
+          default: "v1thakur"  # optional    
+        release_summary:
+          default: RELEASE_SUMMARY
+          description: Text to attach to Github release message
+          type: env_var_name  # optional    
+      steps:
+        - run:
+            name: Create release via Github API
+            command: |
+              echo $RELEASE_NAME
+              echo $RELEASE_MESSAGE
+              API="https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/releases?access_token=$GITHUB_API_TOKEN"
+              DATA="{\"tag_name\": \"$RELEASE_NAME\",\"name\": \"$RELEASE_NAME\",\"body\": \"$RELEASE_MESSAGE\",\"target_commitish\": \"$CIRCLE_BRANCH\",\"draft\": false,\"prerelease\": false}"
+              echo $DATA > data.json  # easier to debug
+              cat data.json
+              echo "Test payload is correctly formatted as JSON"
+              echo $DATA | jq type
+              curl -X POST -d @data.json -H "Content-Type: application/json, Accept: application/json" $API          
 
 # jobs:
 #   release:
