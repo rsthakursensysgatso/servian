@@ -247,57 +247,57 @@ workflows:
 #     type: string
 #     default: $CIRCLE_PROJECT_REPONAME
 
-commands:
-  create:
-    description: Create a new release.
-    parameters:
-      <<: *common-parameters
-      tag:
-        description: Git tag using as the version number of the release.
-        type: string
-      target:
-        description: Git commitish (commit SHA or branch name) containing the project you want to release.
-        type: string
-        default: $CIRCLE_SHA1
-      title:
-        description: Name of the release.
-        type: string
-      description:
-        description: Description of the release.
-        type: string
-      file-path:
-        description: |
-          File path to be uploaded.
-          If directory, all files in the directory will be uploaded.
-          If empty, just create a new release without uploading any files.
-        type: string
-        default: ""
-      draft:
-        description: Set true if the release is a draft.
-        type: boolean
-        default: false
-      pre-release:
-        description: Set true if the release is a pre-release.
-        type: boolean
-        default: false
-    steps:
-      - internal__install-deps
-      - when:
-          condition: << parameters.file-path >>
-          steps:
-            - run:
-                name: "[github-release/create] Publish a new release with artifacts"
-                command: |
-                  ghr \
-                    --token << parameters.github-token-variable >> \
-                    --username << parameters.user >> \
-                    --repository << parameters.repository >> \
-                    --commitish << parameters.target >> \
-                    --name "<< parameters.title >>" \
-                    --body "<< parameters.description >>" \
-                    <<# parameters.draft >> --draft <</ parameters.draft >> \
-                    <<# parameters.pre-release >> --prerelease <</ parameters.pre-release >> \
-                      << parameters.tag >> << parameters.file-path >>
+# commands:
+#   create:
+#     description: Create a new release.
+#     parameters:
+#       <<: *common-parameters
+#       tag:
+#         description: Git tag using as the version number of the release.
+#         type: string
+#       target:
+#         description: Git commitish (commit SHA or branch name) containing the project you want to release.
+#         type: string
+#         default: $CIRCLE_SHA1
+#       title:
+#         description: Name of the release.
+#         type: string
+#       description:
+#         description: Description of the release.
+#         type: string
+#       file-path:
+#         description: |
+#           File path to be uploaded.
+#           If directory, all files in the directory will be uploaded.
+#           If empty, just create a new release without uploading any files.
+#         type: string
+#         default: ""
+#       draft:
+#         description: Set true if the release is a draft.
+#         type: boolean
+#         default: false
+#       pre-release:
+#         description: Set true if the release is a pre-release.
+#         type: boolean
+#         default: false
+#     steps:
+#       - internal__install-deps
+#       - when:
+#           condition: << parameters.file-path >>
+#           steps:
+#             - run:
+#                 name: "[github-release/create] Publish a new release with artifacts"
+#                 command: |
+#                   ghr \
+#                     --token << parameters.github-token-variable >> \
+#                     --username << parameters.user >> \
+#                     --repository << parameters.repository >> \
+#                     --commitish << parameters.target >> \
+#                     --name "<< parameters.title >>" \
+#                     --body "<< parameters.description >>" \
+#                     <<# parameters.draft >> --draft <</ parameters.draft >> \
+#                     <<# parameters.pre-release >> --prerelease <</ parameters.pre-release >> \
+#                       << parameters.tag >> << parameters.file-path >>
 
 # examples:
 #   command-usage:
