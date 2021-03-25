@@ -67,7 +67,8 @@ jobs:
       - run: 
           name: "Checkout the repository"
           command: |
-            git clone --depth 5 "$CIRCLE_REPOSITORY_URL" --branch "$CIRCLE_BRANCH"
+            #git clone --depth 5 "$CIRCLE_REPOSITORY_URL" --branch "$CIRCLE_BRANCH"
+            git clone --single-branch --branch "$CIRCLE_BRANCH" $CIRCLE_REPOSITORY_URL
       - run:
           name: "Add `VERSION` environment variable to `BASH_ENV`"
           command: |
