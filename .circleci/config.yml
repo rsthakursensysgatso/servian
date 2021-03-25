@@ -157,49 +157,96 @@
 ######################
 
 
-
-
-
 version: 2.1
 orbs:
-   version-control: tvx/version-control@0.1.7
+  version-control: tvx/version-control@0.1.7
 jobs:
-   release:
-      executor: default
-      steps:
-         - checkout
-         - version-control/release
+  release:
+    executor: default
+    steps:
+      - checkout
+      - run:
+          name: >-
+            For dynamic variables that cannot be set/determined statically, and
+            environment variable can be used
+#           command: >
+#             echo "export RELEASE_SUMMARY=\"Dynamic parameters can be prepended
+#             to the release-message via env var.\"" >> $BASH_ENV
+
+          commands: 
+            create:
+              description: Create a new release.
+              parameters:
+                <<: *common-parameters
+                tag:
+                  description: Git tag using as the version number of the release.
+                  type: string
+                target:
+                  description: Git commitish (commit SHA or branch name) containing the project you want to release.
+                  type: string
+                  default: $CIRCLE_SHA1
+                title:
+                  description: Name of the release.
+                  type: string
+                description:
+                  description: Description of the release.
+                  type: string
+                file-path:
+                  description: |
+                    File path to be uploaded.
+                    If directory, all files in the directory will be uploaded.
+                    If empty, just create a new release without uploading any files.
+                  type: string
+                  default: ""
+                draft:
+                  description: Set true if the release is a draft.
+                  type: boolean
+                  default: false
+                pre-release:
+                  description: Set true if the release is a pre-release.
+                  type: boolean
+                  default: false
+              steps:
+                - internal__install-deps
+                - when:
+                    condition: << parameters.file-path >>
+                    steps:
+                      - run:
+                          name: "[github-release/create] Publish a new release with artifacts"
+                          command: |
+                            ghr \
+                              --token << parameters.github-token-variable >> \
+                              --username << parameters.user >> \
+                              --repository << parameters.repository >> \
+                              --commitish << parameters.target >> \
+                              --name "<< parameters.title >>" \
+                              --body "<< parameters.description >>" \
+                              <<# parameters.draft >> --draft <</ parameters.draft >> \
+                              <<# parameters.pre-release >> --prerelease <</ parameters.pre-release >> \
+                                << parameters.tag >> << parameters.file-path >>
+
+      - version-control/release:
+          release_name: release feature-1
+          release_message: custom_message
 workflows:
   build:
     jobs:
-      - release         
-description: |
-  Create / delete GitHub's Releases.
-  Issues & PRs: https://github.com/h-matsuo/circleci-orb-github-release
+      - release
 
-executors:
-  default:
-    parameters:
-      tag:
-        description: Pick a specific circleci/golang image variant.
-        type: string
-        default: "latest"
-    docker:
-      - image: circleci/golang:<< parameters.tag >>
 
-common-parameters: &common-parameters
-  github-token-variable:
-    description: Environment variable containing your GitHub personal access token.
-    type: string
-    default: $GITHUB_TOKEN
-  user:
-    description: GitHub repository user or organization.
-    type: string
-    default: $CIRCLE_PROJECT_USERNAME
-  repository:
-    description: GitHub repository.
-    type: string
-    default: $CIRCLE_PROJECT_REPONAME
+# common-parameters: &common-parameters
+#   github-token-variable:
+#     description: Environment variable containing your GitHub personal access token.
+#     type: string
+#     default: $GITHUB_TOKEN
+#   user:
+#     description: GitHub repository user or organization.
+#     type: string
+#     default: $CIRCLE_PROJECT_USERNAME
+#   repository:
+#     description: GitHub repository.
+#     type: string
+#     default: $CIRCLE_PROJECT_REPONAME
 
 commands:
   create:
