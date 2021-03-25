@@ -78,9 +78,6 @@ jobs:
             echo $MAJOR
              
       - github-release/create:
-          tag: vX.YY.ZZ
-          title: Version vX.YY.ZZ
-          description: This release is version vX.YY.ZZ .
           tag: vX.YY1.ZZ
           title: Version vX.YY1.ZZ
           description: This release is version vX.YY1.ZZ .
