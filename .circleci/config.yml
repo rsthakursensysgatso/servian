@@ -85,7 +85,7 @@ jobs:
             echo "export RELEASE_MESSAGE="$(git describe --tags `git rev-list --tags --max-count=1` || true)"" >> $BASH_ENV
             echo $SHA
              
-            github-release/create:
+          - github-release/create:
               tag: vX.YY1.ZZ-$SHA
               title: Version vX.YY1.ZZ-$SHA
               description: This release is version vX.YY1.ZZ-$SHA.
