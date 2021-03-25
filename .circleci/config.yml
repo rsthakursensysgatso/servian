@@ -57,14 +57,14 @@ orbs:
 jobs:
   build:
     docker:
-      - image: circleci/buildpack-deps:latest  
+      - image: circleci/golang:1.12  
     description: Create dummy file and publish a new release tagged `vX.Y.Z`.
     executor: github-release/default
     steps:
       - checkout
   release: 
     docker:
-      - image: circleci/buildpack-deps:latest   
+      - image: circleci/golang:1.12 
     steps:   
       - checkout
       - run:
