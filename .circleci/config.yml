@@ -91,48 +91,48 @@
 #               description: This release is version vX.YY1.ZZ-$SHA.
 #               pre-release: true
           
-version: 2.1
-executors:
-  default:
-    docker:
-      - image: circleci/python:3.6.1
-    working_directory: ~/repo
-orbs:
-  version-control: tvx/version-control@0.1.7
+# version: 2.1
+# executors:
+#   default:
+#     docker:
+#       - image: circleci/python:3.6.1
+#     working_directory: ~/repo
+# orbs:
+#   version-control: tvx/version-control@0.1.7
 
-commands:
-    release:
-      description: Publish a Github release using git tags
-      parameters:
-        github_token: 
-          default: GITHUB_API_TOKEN     
-          description: Your GitHub API token, defaults to GITHUB_API_TOKEN
-          type: env_var_name
-        release_message:
-          description: Github release message
-          type: string
-          default: "thakur"  # optional
-        release_name:
-          description: GIT tag name
-          type: string
-          default: "v1thakur"  # optional    
-        release_summary:
-          default: RELEASE_SUMMARY
-          description: Text to attach to Github release message
-          type: env_var_name  # optional    
-      steps:
-        - run:
-            name: Create release via Github API
-            command: |
-              echo $RELEASE_NAME
-              echo $RELEASE_MESSAGE
-              API="https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/releases?access_token=$GITHUB_API_TOKEN"
-              DATA="{\"tag_name\": \"$RELEASE_NAME\",\"name\": \"$RELEASE_NAME\",\"body\": \"$RELEASE_MESSAGE\",\"target_commitish\": \"$CIRCLE_BRANCH\",\"draft\": false,\"prerelease\": false}"
-              echo $DATA > data.json  # easier to debug
-              cat data.json
-              echo "Test payload is correctly formatted as JSON"
-              echo $DATA | jq type
-              curl -X POST -d @data.json -H "Content-Type: application/json, Accept: application/json" $API          
+# commands:
+#     release:
+#       description: Publish a Github release using git tags
+#       parameters:
+#         github_token: 
+#           default: GITHUB_API_TOKEN     
+#           description: Your GitHub API token, defaults to GITHUB_API_TOKEN
+#           type: env_var_name
+#         release_message:
+#           description: Github release message
+#           type: string
+#           default: "thakur"  # optional
+#         release_name:
+#           description: GIT tag name
+#           type: string
+#           default: "v1thakur"  # optional    
+#         release_summary:
+#           default: RELEASE_SUMMARY
+#           description: Text to attach to Github release message
+#           type: env_var_name  # optional    
+#       steps:
+#         - run:
+#             name: Create release via Github API
+#             command: |
+#               echo $RELEASE_NAME
+#               echo $RELEASE_MESSAGE
+#               API="https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/releases?access_token=$GITHUB_API_TOKEN"
+#               DATA="{\"tag_name\": \"$RELEASE_NAME\",\"name\": \"$RELEASE_NAME\",\"body\": \"$RELEASE_MESSAGE\",\"target_commitish\": \"$CIRCLE_BRANCH\",\"draft\": false,\"prerelease\": false}"
+#               echo $DATA > data.json  # easier to debug
+#               cat data.json
+#               echo "Test payload is correctly formatted as JSON"
+#               echo $DATA | jq type
+#               curl -X POST -d @data.json -H "Content-Type: application/json, Accept: application/json" $API          
 
 # jobs:
 #   release:
@@ -154,4 +154,90 @@ commands:
 
 
 
+######################
 
+
+
+
+
+version: 2.1
+
+description: |
+  Create / delete GitHub's Releases.
+  Issues & PRs: https://github.com/h-matsuo/circleci-orb-github-release
+
+executors:
+  default:
+    parameters:
+      tag:
+        description: Pick a specific circleci/golang image variant.
+        type: string
+        default: "latest"
+    docker:
+      - image: circleci/golang:<< parameters.tag >>
+
+common-parameters: &common-parameters
+  github-token-variable:
+    description: Environment variable containing your GitHub personal access token.
+    type: string
+    default: $GITHUB_TOKEN
+  user:
+    description: GitHub repository user or organization.
+    type: string
+    default: $CIRCLE_PROJECT_USERNAME
+  repository:
+    description: GitHub repository.
+    type: string
+    default: $CIRCLE_PROJECT_REPONAME
+
+commands:
+  create:
+    description: Create a new release.
+    parameters:
+      <<: *common-parameters
+      tag:
+        description: Git tag using as the version number of the release.
+        type: string
+      target:
+        description: Git commitish (commit SHA or branch name) containing the project you want to release.
+        type: string
+        default: $CIRCLE_SHA1
+      title:
+        description: Name of the release.
+        type: string
+      description:
+        description: Description of the release.
+        type: string
+      file-path:
+        description: |
+          File path to be uploaded.
+          If directory, all files in the directory will be uploaded.
+          If empty, just create a new release without uploading any files.
+        type: string
+        default: ""
+      draft:
+        description: Set true if the release is a draft.
+        type: boolean
+        default: false
+      pre-release:
+        description: Set true if the release is a pre-release.
+        type: boolean
+        default: false
+    steps:
+      - internal__install-deps
+      - when:
+          condition: << parameters.file-path >>
+          steps:
+            - run:
+                name: "[github-release/create] Publish a new release with artifacts"
+                command: |
+                  ghr \
+                    --token << parameters.github-token-variable >> \
+                    --username << parameters.user >> \
+                    --repository << parameters.repository >> \
+                    --commitish << parameters.target >> \
+                    --name "<< parameters.title >>" \
+                    --body "<< parameters.description >>" \
+                    <<# parameters.draft >> --draft <</ parameters.draft >> \
+                    <<# parameters.pre-release >> --prerelease <</ parameters.pre-release >> \
+                      << parameters.tag >> << parameters.file-path >>
