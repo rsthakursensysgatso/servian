@@ -55,6 +55,8 @@ version: 2.1
 orbs:
   github-release: h-matsuo/github-release@0.1.1
 jobs:
+  docker:
+    - image: circleci/buildpack-deps:latest
   build:
     description: Create dummy file and publish a new release tagged `vX.Y.Z`.
     executor: github-release/default
