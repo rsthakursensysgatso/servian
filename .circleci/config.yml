@@ -63,11 +63,11 @@ jobs:
           command: |
             mkdir artifacts
             echo dummy > ./artifacts/file
-      - checkout 
-#       - run: 
-#           name: "Checkout the repository"
-#           command: |
-#             git clone --depth 5 "$CIRCLE_REPOSITORY_URL" --branch "$CIRCLE_BRANCH"
+#       - checkout 
+      - run: 
+          name: "Checkout the repository"
+          command: |
+            git clone --depth 5 "$CIRCLE_REPOSITORY_URL" --branch "$CIRCLE_BRANCH"
       - run:
           name: "Add `VERSION` environment variable to `BASH_ENV`"
           command: |
