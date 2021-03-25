@@ -72,15 +72,15 @@ jobs:
       - run:
           name: "Add `VERSION` environment variable to `BASH_ENV`"
           command: |
-            RELEASE_MEAAGE="$(git describe --tags `git rev-list --tags --max-count=1` || true)"
-            MAJOR="$(cat ravi1 |grep Version|awk '{print $2}'|cut -d '"' -f2|cut -d '.' -f1)"
-            MINOR="$(cat ravi1 |grep Version|awk '{print $2}'|cut -d '"' -f2|cut -d '.' -f2)"
-            PATCH="$(cat ravi1 |grep Version|awk '{print $2}'|cut -d '"' -f2|cut -d '.' -f3)"
+            export RELEASE_MEAAGE="$(git describe --tags `git rev-list --tags --max-count=1` || true)"
+            export MAJOR="$(cat ravi1 |grep Version|awk '{print $2}'|cut -d '"' -f2|cut -d '.' -f1)"
+            export MINOR="$(cat ravi1 |grep Version|awk '{print $2}'|cut -d '"' -f2|cut -d '.' -f2)"
+            export PATCH="$(cat ravi1 |grep Version|awk '{print $2}'|cut -d '"' -f2|cut -d '.' -f3)"
             echo $MAJOR
-            SHA="$(git rev-parse --short HEAD)"
+            export SHA="$(git rev-parse --short HEAD)"
              
       - github-release/create:
-          echo $SHA
+          #echo $SHA
           tag: vX.YY1.ZZ-$SHA
           title: Version vX.YY1.ZZ-$SHA
           description: This release is version vX.YY1.ZZ-$SHA.
