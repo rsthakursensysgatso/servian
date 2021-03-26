@@ -87,16 +87,17 @@ jobs:
             echo "export PATCH="$(cat ravi1 |grep Version|awk '{print $2}'|cut -d '"' -f2|cut -d '.' -f3)"" >> $BASH_ENV
             echo "export RELEASE_MESSAGE="$(git describe --tags `git rev-list --tags --max-count=1` || true)"" >> $BASH_ENV
             echo $SHA
-            export BODY="Release Body"
+            export BODY="## Notable Changes
+                         - ${RELEASE_MESSAGE}"
             go get github.com/tcnksm/ghr
             #ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} -prerelease ${TAG}
             #ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1}  -prerelease ${TAG}
             if [[ $TAG =~ "-" ]]; then
               echo "It's a PRE-Release!"
-              ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete -n  "${RELEASE_MESSAGE}" -b "- ${BODY}" -prerelease v${TAG}
+              ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete -n  "${RELEASE_MESSAGE}" -b "${BODY}" -prerelease v${TAG}
             else
               echo "It's a Release!"
-              ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete -n "${RELEASE_MESSAGE}" -b "- ${BODY}"  v${TAG}
+              ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete -n "${RELEASE_MESSAGE}" -b "${BODY}"  v${TAG}
             fi
            
 workflows:
