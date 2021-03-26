@@ -76,6 +76,9 @@ jobs:
             export PATCH="$(cat ravi1 |grep Version|awk '{print $2}'|cut -d '"' -f2|cut -d '.' -f3)"
             export TAG="$(cat ravi1 |grep Version|awk '{print $2}'|cut -d '"' -f2)"
             export RELEASE_MESSAGE="$(git describe --tags `git rev-list --tags --max-count=1` || true)"
+            res="$(git describe --tags --match=$VERSION_BRANCH* --abbrev=0)"
+            echo $res
+            echo $RELEASE_MESSAGE
             echo $MAJOR
             export SHA="$(git rev-parse --short HEAD)"
             echo "export VERSION=$VERSION" >> $BASH_ENV
