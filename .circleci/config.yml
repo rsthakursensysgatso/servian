@@ -95,10 +95,10 @@ jobs:
             #ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1}  -prerelease ${TAG}
             if [[ $TAG =~ "-" ]]; then
               echo "It's a PRE-Release!"
-              ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -b "${BODY}" -n  "${RELEASE_MESSAGE}"  -prerelease v${TAG} -delete 
+              ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -b "${BODY}" -n  "${RELEASE_MESSAGE}" -delete   -prerelease v${TAG} 
             else
               echo "It's a Release!"
-              ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -b "${BODY}" -n "${RELEASE_MESSAGE}"   v${TAG} -delete 
+              ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -b "${BODY}" -n "${RELEASE_MESSAGE}"  -delete   v${TAG}
             fi
            
 workflows:
