@@ -139,8 +139,8 @@ jobs:
            echo "aws_secret_access_key = $aws_secret_access_key" >>  /root/.aws/credentials        
            cd statebucket           
            sed -i "s/terraform_state_bucket/$terraform_state_bucket/g" state.tf  
-           ../terraform  state replace-provider -- -/aws hashicorp/aws
-           ../terraform init
+           #../terraform  state replace-provider -- -/aws hashicorp/aws
+           #../terraform init
            ../terraform init
            ../check.sh         
            
