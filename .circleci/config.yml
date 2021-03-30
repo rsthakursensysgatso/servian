@@ -142,6 +142,8 @@ jobs:
            #../terraform  state replace-provider -- -/aws hashicorp/aws
            #../terraform init
            ../terraform init
+           ls
+           pwd
            echo `which bash`
            echo `which sh`
       - run: ./statebucket/check.sh         
