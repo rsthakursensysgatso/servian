@@ -122,9 +122,9 @@ workflows:
       - build
         requires:
            - terraform
-      - release:
-          requires:
-             - build
+        - release:
+            requires:
+               - build
         
   
   
