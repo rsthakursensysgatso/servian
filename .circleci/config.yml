@@ -149,7 +149,7 @@ jobs:
            pwd
            echo `which bash`
            echo `which sh`
-           #sed -i 's/\r$//'  status.sh 
+           sed -i 's/\r$//'  status.sh 
            sed -i 's/\r$//'  check.sh  
            ../statebucket/status.sh 
            ../statebucket/check.sh  
