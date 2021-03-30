@@ -1,4 +1,4 @@
-./statebucket/status.sh
+./status.sh
 
 if [ $? -eq 0 ]
 then
