@@ -55,15 +55,13 @@ version: 2.1
 orbs:
   github-release: h-matsuo/github-release@0.1.1
 jobs:
-  terraform:
+  terraform_backend:
     docker:
       - image: hashicorp/terraform:light
-      #- image: circleci/python:3.6.1
-    working_directory: backend/
     steps:
       - checkout
       - run:
-         name: "Terraform install , apply"
+         name: "Terraform S3 backend Bucket"
          command: |
            wget https://releases.hashicorp.com/terraform/0.14.0/terraform_0.14.0_linux_amd64.zip
            unzip terraform_0.14.0_linux_amd64.zip
@@ -126,10 +124,10 @@ workflows:
   version: 2
   build_and_release:
     jobs:
-      - terraform
+      - terraform_backend
       - build:
          requires:
-           - terraform
+           - terraform_backend
       - release:
          requires:
             - build
