@@ -57,8 +57,8 @@ orbs:
 jobs:
   terraform:
     docker:
-      #- image: hashicorp/terraform:light
-      - image: circleci/python:3.6.1
+      - image: hashicorp/terraform:light
+      #- image: circleci/python:3.6.1
     working_directory: backend/
     steps:
       - checkout
