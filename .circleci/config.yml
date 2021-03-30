@@ -121,10 +121,10 @@ workflows:
       - terraform
       - build
           requires:
-           - terraform
+            - terraform
       - release:
           requires:
-           - build
+            - build
         
   
   
