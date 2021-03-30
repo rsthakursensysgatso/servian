@@ -5,7 +5,7 @@ provider "aws" {
 
 
 resource "aws_s3_bucket" "terraform-state" {
-  bucket = "app-terraform-state-bucket"
+  bucket = "terraform_state_bucket"
   acl    = "private"
   force_destroy = true
   versioning {
