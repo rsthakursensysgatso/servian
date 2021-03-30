@@ -1,5 +1,3 @@
-#!/bin/bash
-
 ./status.sh
 
 if [ $? -eq 0 ];then
