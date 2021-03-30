@@ -123,7 +123,7 @@ jobs:
 
   app_status:
     docker:
-      - image:  koalaman/shellcheck-alpine:stable
+      - image: hashicorp/terraform:light
     steps:
       - checkout
       - run:
