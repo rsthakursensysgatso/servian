@@ -120,9 +120,8 @@ workflows:
     jobs:
       - terraform
       - build
-          requires:
-            - terraform
-            - build
+      - release
+
 #       - release:
 #           requires:
 #             - build
