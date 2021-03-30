@@ -140,6 +140,7 @@ jobs:
            sed -i "s/terraform_state_bucket/$terraform_state_bucket/g" state.tf  
            ../terraform  state replace-provider -- -/aws hashicorp/aws
            ../terraform init
+           ../terraform init
            ../check.sh         
            
             
