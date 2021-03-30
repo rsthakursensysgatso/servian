@@ -66,6 +66,7 @@ jobs:
          command: |
            wget https://releases.hashicorp.com/terraform/0.14.0/terraform_0.14.0_linux_amd64.zip
            unzip terraform_0.14.0_linux_amd64.zip
+           chmod +x terraform
            ./terraform init
            ./terraform plan         
   build:
@@ -120,7 +121,8 @@ workflows:
     jobs:
       - terraform
       - build
-      - release
+          requires:
+            - terraform
 
 #       - release:
 #           requires:
