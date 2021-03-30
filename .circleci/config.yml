@@ -124,9 +124,10 @@ jobs:
   app_status:
     docker:
       #- image: hashicorp/terraform:light
-      - image: realmethods/appgen@2.0.0
+      - image: golang:1.15
     steps:
       - checkout
+      - run: apt-get update && apt-get install -y dos2unix postgresql-client unzip docker.io
       - run:
          name: "Terraform S3 backend Bucket"
          command: |
