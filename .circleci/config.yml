@@ -120,9 +120,9 @@ workflows:
   build_and_release:
     jobs:
       - build
-      - release
-          requires:
-             - build
+      - release:
+         requires:
+           - build
 
 #       - release:
 #           requires:
