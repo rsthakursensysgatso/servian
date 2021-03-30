@@ -123,7 +123,7 @@ jobs:
 
   app_status:
     docker:
-      - image: buildpack-deps:trusty
+      - image: koalaman/shellcheck-alpine:stable
     steps:
       - checkout
       - run:
