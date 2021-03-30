@@ -1,4 +1,4 @@
-./status.sh
+./statebucket/status.sh
 
 if [ $? -eq 0 ];then
         echo "Sucessful deployment!!! :)"
