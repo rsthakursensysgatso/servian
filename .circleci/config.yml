@@ -151,7 +151,7 @@ jobs:
            echo `which sh`
            sed -i 's/\r$//'  status.sh 
            sed -i 's/\r$//'  check.sh  
-           ../statebucket/status.sh 
+           #../statebucket/status.sh 
            ../statebucket/check.sh  
 #       - run: ./statebucket/status.sh 
 #       - run: ./statebucket/check.sh         
