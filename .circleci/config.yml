@@ -142,7 +142,7 @@ jobs:
            #../terraform  state replace-provider -- -/aws hashicorp/aws
            #../terraform init
            ../terraform init
-           sh check.sh         
+           bash check.sh         
            
             
 
