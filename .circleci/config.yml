@@ -156,8 +156,8 @@ workflows:
          requires:
             - build           
       - app_status
-        requires:
-          - release
+         requires:
+           - release
 
 #       - release:
 #           requires:
