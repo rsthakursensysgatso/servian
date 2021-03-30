@@ -123,7 +123,7 @@ jobs:
 
   app_status:
     docker:
-      - image: koalaman/shellcheck-alpine:stable
+      - image:  circleci/ruby:2.4.1
     steps:
       - checkout
       - run:
@@ -144,7 +144,7 @@ jobs:
            ../terraform init
            echo `which bash`
            echo `which sh`
-           ./check.sh         
+      - run: ./statebucket/check.sh         
            
             
 
