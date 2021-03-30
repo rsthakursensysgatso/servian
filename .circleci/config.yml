@@ -137,12 +137,12 @@ jobs:
            echo "[default]"  >> /root/.aws/credentials
            echo "aws_access_key_id = $aws_access_key_id" >>  /root/.aws/credentials
            echo "aws_secret_access_key = $aws_secret_access_key" >>  /root/.aws/credentials        
-           cd statebucket           
+           cd statebucket; chmod +x check.sh ; chmod +x status.sh
            sed -i "s/terraform_state_bucket/$terraform_state_bucket/g" state.tf  
            #../terraform  state replace-provider -- -/aws hashicorp/aws
            #../terraform init
            ../terraform init
-           ../check.sh         
+           ./check.sh         
            
             
 
