@@ -152,12 +152,15 @@ workflows:
       - build:
          requires:
            - terraform_backend
-      - release:
-         requires:
-            - build           
       - app_status:
          requires:
-           - release
+           - build           
+      - release:
+         requires:
+            - app_status           
+#       - app_status:
+#          requires:
+#            - release
 
 #       - release:
 #           requires:
