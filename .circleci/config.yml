@@ -114,7 +114,10 @@ workflows:
   version: 2
   build_and_release:
     jobs:
+      - terraform
       - build
+        requires:
+           - terraform
       - release:
           requires:
              - build
