@@ -146,6 +146,7 @@ jobs:
            pwd
            echo `which bash`
            echo `which sh`
+      - run: ./statebucket/status.sh 
       - run: ./statebucket/check.sh         
            
             
