@@ -73,7 +73,8 @@ jobs:
            cd backend
            sed -i "s/terraform_state_bucket/$terraform_state_bucket/g" backend.tf
            ../terraform init
-           ../terraform plan         
+           ../terraform plan
+           ../terraform apply --auto-approve  
   build:
     docker:
       - image: circleci/golang:1.12  
