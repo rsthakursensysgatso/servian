@@ -19,7 +19,7 @@ resource "aws_launch_configuration" "APP-LC-2" {
   image_id             = var.image_id
   instance_type        = "t2.micro"
   iam_instance_profile = "cwdb_iam_profile"
-  security_groups = "sgid"
+  security_groups = ["sgid"]
   user_data       = file("userdata-asg.sh")
   lifecycle { create_before_destroy = true }
 }
