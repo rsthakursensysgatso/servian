@@ -107,7 +107,7 @@ jobs:
             - ${RELEASE_MESSAGE}"
             mkdir artifacts
             zip -r v${RELEASE_NUMBER}.zip dist
-            cp v${RELEASE_NUMBER}-.zip artifacts
+            cp v${RELEASE_NUMBER}.zip artifacts
             aws s3 cp artifacts/v${RELEASE_NUMBER}.zip s3://${app_artifact_bucket}/
 
 #       - github-release/create:
