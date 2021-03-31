@@ -1,7 +1,7 @@
 lcfg1="APP-LC"
 lcfg2="APP-LC-2"
 
-lc=`aws autoscaling describe-launch-configurations --region us-east-1|grep LaunchConfigurationName|awk '{print $2}'|cut -c 2-19`
+lc=`aws autoscaling describe-launch-configurations --region us-east-1|grep LaunchConfigurationName|awk '{print $2}'|cut -d '"' -f2`
 
 if [[ "$lc" == "$lcfg1" ]]
 then
@@ -24,7 +24,6 @@ then
 	aws autoscaling update-auto-scaling-group --auto-scaling-group-name APP-ASG --launch-configuration-name $lcfg1 --min-size 2 --max-size 2
 	
 else
-        cd app
 	../terraform init
 	../terraform plan
 	../terraform apply --auto-approve  
