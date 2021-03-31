@@ -6,6 +6,9 @@ lc=`aws autoscaling describe-launch-configurations --region us-east-1|grep Launc
 if [[ "$lc" == "$lcfg1" ]]
 then
 	cd lc2
+	vpc=`aws ec2 describe-vpcs --filters Name=tag:Name,Values='WP Solution VPC' --query 'Vpcs[*].VpcId' --output text`
+	sg=aws ec2  describe-security-groups --filter Name=vpc-id,Values=$vpc  Name=group-name,Values=app_asg --region us-east-1 --query 'SecurityGroups[*].[GroupId]' --output text	
+	sed -i "s/sgid/$sg/g" lc.tf
 	terraform init
 	terraform apply --auto-approve  
 	aws autoscaling update-auto-scaling-group --auto-scaling-group-name APP-ASG --launch-configuration-name $lcfg2 --min-size 4 --max-size 4
@@ -16,6 +19,9 @@ then
 elif [[ "$lc" == "$lcfg2" ]]
 then
 	cd lc1
+	vpc=`aws ec2 describe-vpcs --filters Name=tag:Name,Values='WP Solution VPC' --query 'Vpcs[*].VpcId' --output text`
+	sg=aws ec2  describe-security-groups --filter Name=vpc-id,Values=$vpc  Name=group-name,Values=app_asg --region us-east-1 --query 'SecurityGroups[*].[GroupId]' --output text	
+	sed -i "s/sgid/$sg/g" lc.tf	
 	terraform init
 	terraform apply --auto-approve  
 	aws autoscaling update-auto-scaling-group --auto-scaling-group-name APP-ASG --launch-configuration-name $lcfg1 1 --min-size 4 --max-size 4
