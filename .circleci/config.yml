@@ -92,6 +92,7 @@ jobs:
       - run:
            name: "Git Clone and Build"
            command: |
+            apt-get update; apt-get  -y install awscli
             git clone https://github.com/servian/TechChallengeApp.git
             cd TechChallengeApp/;./build.sh
             #export RELEASE_NUMBER="$(git describe --tags `git rev-list --tags --max-count=1` || true)"
@@ -99,9 +100,12 @@ jobs:
             export RELEASE_MESSAGE="$(git log -1 --pretty=%B)"
             export BODY="## Notable Changes
             - ${RELEASE_MESSAGE}"
-      - github-release/create:
-            title: Release Version ${RELEASE_NUMBER}
-            description: This Release Version is ${RELEASE_NUMBER}
+            mkdir artifacts
+            zip -r v${RELEASE_NUMBER}-.zip dist
+            cp v${RELEASE_NUMBER}-.zip artifacts
+#       - github-release/create:
+#             title: Release Version ${RELEASE_NUMBER}
+#             description: This Release Version is ${RELEASE_NUMBER}
             #go get github.com/tcnksm/ghr
             #if [[ $TAG =~ "-" ]]; then
             #  echo "It's a PRE-Release!"
