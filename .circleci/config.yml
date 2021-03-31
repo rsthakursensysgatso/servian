@@ -175,7 +175,7 @@ jobs:
             else
               echo "It's a Release!"
               #ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1}  -delete   -n v${RELEASE_NUMBER}  -b "${BODY}"  v"${RELEASE_NUMBER}:${RELEASE_MESSAGE}"  ./artifacts
-              ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1}    -n v${RELEASE_NUMBER}  -b "${BODY}"  'v${RELEASE_NUMBER}:${RELEASE_MESSAGE}'  ./artifacts
+              ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1}    -n v${RELEASE_NUMBER}  -b "${BODY}"  'v${RELEASE_NUMBER}${RELEASE_MESSAGE}'  ./artifacts
             fi
 
   app_status:
