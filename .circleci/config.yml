@@ -158,7 +158,7 @@ jobs:
             cd TechChallengeApp/
             export RELEASE_NUMBER="$(cat cmd/root.go |grep Version|awk '{print $2}'|cut -d '"' -f2)"
             export TAG="$(cat cmd/root.go |grep Version|awk '{print $2}'|cut -d '"' -f2)"
-            export RELEASE_MESSAGE="$(git log -1 --pretty=%B)"
+            export RELEASE_MESSAGE="$(git log -1 --pretty=%B|head -1)"
             cd ..
             mkdir artifacts
             aws s3 cp  s3://${app_artifact_bucket}/v${RELEASE_NUMBER}.zip artifacts/
@@ -171,10 +171,10 @@ jobs:
             #ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1}  -prerelease ${TAG}
             if [[ $TAG =~ "-" ]]; then
               echo "It's a PRE-Release!"
-              ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1}  -delete  -n  v${TAG}  -b "${BODY}" -prerelease v${TAG}   ./artifacts
+              ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1}  -delete  -n  v${TAG}  -b "${BODY}" -prerelease v${TAG}:{RELEASE_MESSAGE}   ./artifacts
             else
               echo "It's a Release!"
-              ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1}  -delete   -n v${TAG}  -b "${BODY}"  v${TAG}  ./artifacts
+              ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1}  -delete   -n v${TAG}  -b "${BODY}"  v${TAG}:{RELEASE_MESSAGE}  ./artifacts
             fi
 
   app_status:
