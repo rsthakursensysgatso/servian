@@ -133,7 +133,7 @@ jobs:
       - run:
            name: "Deploy Infra"
            command: |
-            pwd
+            echo `pwd`
             apt-get update; apt-get  -y install zip awscli  dos2unix unzip
             mkdir /root/.aws/
             echo "[default]"  >> /root/.aws/credentials
