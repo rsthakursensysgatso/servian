@@ -165,7 +165,7 @@ jobs:
             aws s3 cp  s3://${app_artifact_bucket}/v${RELEASE_NUMBER}.zip artifacts/
 
             echo $SHA
-            export BODY="## Notable Changes
+            export BODY="## Release Notes
             ${COMMIT_MESSAGE}"
             go get github.com/tcnksm/ghr
             #ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} -prerelease ${TAG}
