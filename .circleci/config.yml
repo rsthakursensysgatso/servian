@@ -128,6 +128,7 @@ jobs:
       - image: golang:1.15
     description: Deploying Infra
     steps:
+      - checkout
       - run:
            name: "Deploy Infra"
            command: |
