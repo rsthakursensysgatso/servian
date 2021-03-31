@@ -140,9 +140,10 @@ jobs:
             export MAJOR="$(cat ravi1 |grep Version|awk '{print $2}'|cut -d '"' -f2|cut -d '.' -f1)"
             export MINOR="$(cat ravi1 |grep Version|awk '{print $2}'|cut -d '"' -f2|cut -d '.' -f2)"
             export PATCH="$(cat ravi1 |grep Version|awk '{print $2}'|cut -d '"' -f2|cut -d '.' -f3)"
-            export TAG="$(cat ravi1 |grep Version|awk '{print $2}'|cut -d '"' -f2)"
+            #export TAG="$(cat ravi1 |grep Version|awk '{print $2}'|cut -d '"' -f2)"
+            #export RELEASE_NUMBER="$(cat cmd/root.go |grep Version|awk '{print $2}'|cut -d '"' -f2)"
             #export RELEASE_MESSAGE="$(git describe --tags `git rev-list --tags --max-count=1` || true)"
-            export RELEASE_MESSAGE="$(git log -1 --pretty=%B)"
+            #export RELEASE_MESSAGE="$(git log -1 --pretty=%B)"
             res="$(git describe --tags --match=$VERSION_BRANCH* --abbrev=0)"
             echo $res
             echo $RELEASE_MESSAGE
@@ -153,9 +154,11 @@ jobs:
             echo "export MINOR="$(cat ravi1 |grep Version|awk '{print $2}'|cut -d '"' -f2|cut -d '.' -f2)"" >> $BASH_ENV
             echo "export PATCH="$(cat ravi1 |grep Version|awk '{print $2}'|cut -d '"' -f2|cut -d '.' -f3)"" >> $BASH_ENV
             echo "export RELEASE_MESSAGE="$(git describe --tags `git rev-list --tags --max-count=1` || true)"" >> $BASH_ENV
-            git clone https://github.com/servian/TechChallengeApp.git    
+            git clone https://github.com/servian/TechChallengeApp.git
+            #export RELEASE_NUMBER="$(cat cmd/root.go |grep Version|awk '{print $2}'|cut -d '"' -f2)"
             cd TechChallengeApp/
-            export RELEASE_NUMBER="$(cat cmd/root.go |grep Version|awk '{print $2}'|cut -d '"' -f2)"
+            export TAG="$(cat cmd/root.go |grep Version|awk '{print $2}'|cut -d '"' -f2)"
+            export RELEASE_MESSAGE="$(git log -1 --pretty=%B)"
             cd ..
             mkdir artifacts
             aws s3 cp  s3://${app_artifact_bucket}/v${RELEASE_NUMBER}-.zip artifacts/
