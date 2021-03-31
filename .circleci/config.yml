@@ -99,14 +99,17 @@ jobs:
             export RELEASE_MESSAGE="$(git log -1 --pretty=%B)"
             export BODY="## Notable Changes
             - ${RELEASE_MESSAGE}"
-            go get github.com/tcnksm/ghr
-            if [[ $TAG =~ "-" ]]; then
-              echo "It's a PRE-Release!"
-              ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1}  -delete  -n  v${RELEASE_NUMBER}  -b "${BODY}" 
-            else
-              echo "It's a Release!"
-              ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1}  -delete   -n v${RELEASE_NUMBER}  -b "${BODY}"
-            fi             
+            - github-release/create:
+                 title: Release Version ${RELEASE_NUMBER}
+                 description: This Release Version is ${RELEASE_NUMBER}
+            #go get github.com/tcnksm/ghr
+            #if [[ $TAG =~ "-" ]]; then
+            #  echo "It's a PRE-Release!"
+            #  ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1}  -delete  -n  v${RELEASE_NUMBER}  -b "${BODY}" 
+            #else
+            #  echo "It's a Release!"
+            #  ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1}  -delete   -n v${RELEASE_NUMBER}  -b "${BODY}"
+            #fi             
 
   release: 
     docker:
