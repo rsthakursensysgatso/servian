@@ -132,12 +132,14 @@ jobs:
       - run:
            name: "Deploy Infra"
            command: |
-            apt-get update; apt-get  -y install zip awscli
+            apt-get update; apt-get  -y install zip awscli  dos2unix unzip
             mkdir /root/.aws/
             echo "[default]"  >> /root/.aws/credentials
             echo "aws_access_key_id = $aws_access_key_id" >>  /root/.aws/credentials
             echo "aws_secret_access_key = $aws_secret_access_key" >>  /root/.aws/credentials 
             cd app
+            chmod +x deploy.sh
+            sed -i 's/\r$//' deploy.sh            
             ./deploy.sh            
   release: 
     docker:
