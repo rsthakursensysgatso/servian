@@ -99,9 +99,9 @@ jobs:
             export RELEASE_MESSAGE="$(git log -1 --pretty=%B)"
             export BODY="## Notable Changes
             - ${RELEASE_MESSAGE}"
-            - github-release/create:
-                 title: Release Version ${RELEASE_NUMBER}
-                 description: This Release Version is ${RELEASE_NUMBER}
+      - github-release/create:
+            title: Release Version ${RELEASE_NUMBER}
+            description: This Release Version is ${RELEASE_NUMBER}
             #go get github.com/tcnksm/ghr
             #if [[ $TAG =~ "-" ]]; then
             #  echo "It's a PRE-Release!"
