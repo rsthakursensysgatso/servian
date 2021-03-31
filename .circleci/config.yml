@@ -85,7 +85,7 @@ jobs:
 
   build:
     docker:
-      - image: circleci/golang:1.12  
+      - image: golang:1.15
     description: Creating  new release.
     executor: github-release/default
     steps:
