@@ -124,12 +124,18 @@ jobs:
 
   release: 
     docker:
-      - image: circleci/golang:1.12 
+      #- image: circleci/golang:1.12 
+      - image: golang:1.15
     steps:   
       - checkout
       - run:
-          name: "Add `VERSION` environment variable to `BASH_ENV`"
+          name: "Create release after successful deployment"
           command: |
+            apt-get update; apt-get  -y install zip awscli
+            mkdir /root/.aws/
+            echo "[default]"  >> /root/.aws/credentials
+            echo "aws_access_key_id = $aws_access_key_id" >>  /root/.aws/credentials
+            echo "aws_secret_access_key = $aws_secret_access_key" >>  /root/.aws/credentials  
             export RELEASE_MESSAGE="$(git describe --tags `git rev-list --tags --max-count=1` || true)"
             export MAJOR="$(cat ravi1 |grep Version|awk '{print $2}'|cut -d '"' -f2|cut -d '.' -f1)"
             export MINOR="$(cat ravi1 |grep Version|awk '{print $2}'|cut -d '"' -f2|cut -d '.' -f2)"
