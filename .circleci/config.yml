@@ -241,10 +241,11 @@ workflows:
          requires:
            - terraform_backend
       - terraform_deploy:
-          requires: build
+          requires: 
+            - build
       - app_status:
-         terraform_deploy:
-           - build           
+          requires:
+           - terraform_deploy         
       - release:
          requires:
             - app_status           
