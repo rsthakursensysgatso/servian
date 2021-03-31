@@ -1,7 +1,7 @@
 lcfg1="APP-LC"
 lcfg2="APP-LC-2"
 
-lc=`sudo aws autoscaling describe-launch-configurations --region us-east-1|grep LaunchConfigurationName|awk '{print $2}'|cut -c 2-19`
+lc=`aws autoscaling describe-launch-configurations --region us-east-1|grep LaunchConfigurationName|awk '{print $2}'|cut -c 2-19`
 
 if [[ "$lc" == "$lcfg1" ]]
 then
