@@ -103,7 +103,7 @@ jobs:
             #export RELEASE_NUMBER="$(git describe --tags `git rev-list --tags --max-count=1` || true)"
             export RELEASE_NUMBER="$(cat cmd/root.go |grep Version|awk '{print $2}'|cut -d '"' -f2)"
             export RELEASE_MESSAGE="$(git log -1 --pretty=%B)"
-            export BODY="## Notable Changes
+            export BODY="## Rlease Notes
             - ${RELEASE_MESSAGE}"
             mkdir artifacts
             zip -r v${RELEASE_NUMBER}.zip dist
