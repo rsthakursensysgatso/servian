@@ -92,7 +92,7 @@ jobs:
       - run:
            name: "Git Clone and Build"
            command: |
-            apt-get update; apt-get  -y install awscli
+            apt-get update; apt-get  -y install zip awscli
             git clone https://github.com/servian/TechChallengeApp.git
             cd TechChallengeApp/;./build.sh
             #export RELEASE_NUMBER="$(git describe --tags `git rev-list --tags --max-count=1` || true)"
