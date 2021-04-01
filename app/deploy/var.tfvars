@@ -1,3 +1,4 @@
+vars {
 aws_region  = "us-east-1"
 
 image_id = "ami-042e8287309f5df03"
@@ -31,3 +32,4 @@ db_engine   = "postgres"
 db_engine_version = "10.7"
 
 db_identifier = "app-db"
+  }
