@@ -106,7 +106,7 @@ resource "aws_ssm_parameter" "db_username" {
   name        = "dbusername"
   description = "DB Username"
   type        = "SecureString"
-  value       = "${var.db_user}"
+  value       =  var.db_user
 
   tags = {
     environment = "app_db"
