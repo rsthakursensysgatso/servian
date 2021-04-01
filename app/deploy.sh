@@ -34,6 +34,6 @@ then
 else
         cd deploy
 	terraform init
-	terraform plan
-	terraform apply --auto-approve  
+	terraform plan -var-file="var.tfvars"
+	terraform apply --auto-approve  -var-file="var.tfvars"
 fi
