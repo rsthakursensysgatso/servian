@@ -2,7 +2,6 @@
 sudo apt-get update
 sudo apt-get install golang git awscli wget unzip  -y
 
-
 sudo wget https://s3.amazonaws.com/amazoncloudwatch-agent/debian/amd64/latest/amazon-cloudwatch-agent.deb
 sudo wget https://raw.githubusercontent.com/rsthakur83/servian/circleci-project-setup/CloudWatchAgentConfig.json
 sudo dpkg -i amazon-cloudwatch-agent.deb
