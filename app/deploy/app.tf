@@ -484,7 +484,7 @@ resource "aws_launch_configuration" "APP-LC" {
 //  key_name             = "serkey"
 /*  key_name           = "serkey" addressed required */
   security_groups = [aws_security_group.app_asg.id]
-  user_data       = file("userdata-asg.sh")
+  user_data       = file("/root/project/app/deploy/userdata-asg.sh")
   lifecycle { create_before_destroy = true }
 }
 
