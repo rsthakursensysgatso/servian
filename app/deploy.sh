@@ -1,7 +1,8 @@
 lcfg1="APP-LC"
 lcfg2="APP-LC-2"
 asg="APP-ASG"
-lc=`aws autoscaling describe-launch-configurations --region us-east-1|grep LaunchConfigurationName|awk '{print $2}'|cut -d '"' -f2`
+#lc=`aws autoscaling describe-launch-configurations --region us-east-1|grep LaunchConfigurationName|awk '{print $2}'|cut -d '"' -f2`
+lc=`aws autoscaling describe-launch-configurations --region us-east-1|grep LaunchConfigurationName|awk '{print $2}'|tail -1|cut -d '"' -f2`
 
 if [[ "$lc" == "$lcfg1" ]]
 then
