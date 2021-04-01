@@ -9,7 +9,7 @@ then
 	vpc=`aws ec2 describe-vpcs --filters Name=tag:Name,Values='WP Solution VPC' --query 'Vpcs[*].VpcId' --output text`
 	sg=`aws ec2  describe-security-groups --filter Name=vpc-id,Values=$vpc  Name=group-name,Values=app_asg --region us-east-1 --query 'SecurityGroups[*].[GroupId]' --output text`
 	#sed -i "s/sgid/$sg/g" lc.tf
-	aws autoscaling create-launch-configuration --launch-configuration-name APP-LC-2 --image-id ami-042e8287309f5df03 --instance-type t2.micro --iam-instance-profile  cwdb_iam_profile --security-groups $sg  --user-data file://userdata-asg.sh
+	aws autoscaling create-launch-configuration --launch-configuration-name APP-LC-2 --key-name serkey --image-id ami-042e8287309f5df03 --instance-type t2.micro --iam-instance-profile  cwdb_iam_profile --security-groups $sg  --user-data file://userdata-asg.sh
 # 	terraform init
 # 	terraform apply --auto-approve  
 	aws autoscaling update-auto-scaling-group --auto-scaling-group-name APP-ASG --launch-configuration-name $lcfg2 --min-size 4 --max-size 4
@@ -22,7 +22,7 @@ then
 	cd lc1
 	vpc=`aws ec2 describe-vpcs --filters Name=tag:Name,Values='WP Solution VPC' --query 'Vpcs[*].VpcId' --output text`
 	sg=`aws ec2  describe-security-groups --filter Name=vpc-id,Values=$vpc  Name=group-name,Values=app_asg --region us-east-1 --query 'SecurityGroups[*].[GroupId]' --output text`
-	aws autoscaling create-launch-configuration --launch-configuration-name APP-LC --image-id ami-042e8287309f5df03 --instance-type t2.micro --iam-instance-profile  cwdb_iam_profile --security-groups $sg  --user-data file://userdata-asg.sh
+	aws autoscaling create-launch-configuration --launch-configuration-name APP-LC --key-name serkey --image-id ami-042e8287309f5df03 --instance-type t2.micro --iam-instance-profile  cwdb_iam_profile --security-groups $sg  --user-data file://userdata-asg.sh
 	#sed -i "s/sgid/$sg/g" lc.tf	
 # 	terraform init
 # 	terraform apply --auto-approve  
