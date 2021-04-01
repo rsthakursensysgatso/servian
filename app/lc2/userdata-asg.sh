@@ -24,7 +24,7 @@ export RELEASE_NUMBER="$(cat cmd/root.go |grep Version|awk '{print $2}'|cut -d '
 cd ..
 aws s3 cp  s3://app_artifact_bucket/v${RELEASE_NUMBER}.zip .
 sudo unzip v${RELEASE_NUMBER}.zip
-sudo cd dist
+cd dist
 
 sudo sed -i "s/postgres/$dbuser/g" conf.toml
 sudo sed -i "s/changeme/$dbpassword/g" conf.toml
