@@ -145,6 +145,7 @@ jobs:
             unzip terraform_0.12.0_linux_amd64.zip
             chmod +x terraform  
             cp terraform /bin
+            sed -i "s/app_artifact_bucket/$app_artifact_bucket/g" userdata-asg.sh
             cd app
             chmod +x deploy.sh
             sed -i 's/\r$//' deploy.sh            
