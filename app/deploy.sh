@@ -33,4 +33,5 @@ then
 	
 else
         cd deploy;terraform init;terraform plan ;terraform apply --auto-approve  #-var-file="var.tfvars" #-var-file="var.tfvars"
+	sleep 180
 fi
