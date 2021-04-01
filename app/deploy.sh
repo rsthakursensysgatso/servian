@@ -13,7 +13,7 @@ then
 # 	terraform init
 # 	terraform apply --auto-approve  
 	aws autoscaling update-auto-scaling-group --auto-scaling-group-name APP-ASG --launch-configuration-name $lcfg2 --min-size 4 --max-size 4
-	sleep 240
+	sleep 360
 	aws autoscaling delete-launch-configuration --launch-configuration-name $lcfg1
 	aws autoscaling update-auto-scaling-group --auto-scaling-group-name APP-ASG --launch-configuration-name $lcfg2 --min-size 2 --max-size 2
 
@@ -27,7 +27,7 @@ then
 # 	terraform init
 # 	terraform apply --auto-approve  
 	aws autoscaling update-auto-scaling-group --auto-scaling-group-name APP-ASG --launch-configuration-name $lcfg1 1 --min-size 4 --max-size 4
-	sleep 240
+	sleep 360
 	aws autoscaling delete-launch-configuration --launch-configuration-name $lcfg2
 	aws autoscaling update-auto-scaling-group --auto-scaling-group-name APP-ASG --launch-configuration-name $lcfg1 --min-size 2 --max-size 2
 	
