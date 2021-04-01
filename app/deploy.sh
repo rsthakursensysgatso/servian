@@ -32,7 +32,7 @@ then
 	aws autoscaling delete-launch-configuration --launch-configuration-name $lcfg2 
 	
 else
-
+        cd deploy
 	terraform init
 	terraform plan
 	terraform apply --auto-approve  
