@@ -1,3 +1,5 @@
+#!/bin/bash
+
 lcfg1="APP-LC"
 lcfg2="APP-LC-2"
 asg="APP-ASG"
