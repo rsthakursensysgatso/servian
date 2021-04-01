@@ -127,7 +127,7 @@ jobs:
   terraform_deploy:
     docker:
       #- image: golang:1.15
-      - image: cimg/base:stable
+      - image: ubuntu-2004:202008-01
     description: Deploying Infra
     steps:
       - checkout
