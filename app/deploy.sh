@@ -32,9 +32,5 @@ then
 	aws autoscaling delete-launch-configuration --launch-configuration-name $lcfg2 
 	
 else
-        cd deploy
-	terraform init
-	terraform init
-	terraform plan #-var-file="var.tfvars"
-	terraform apply --auto-approve  #-var-file="var.tfvars"
+        cd deploy;terraform init;terraform plan ;terraform apply --auto-approve  #-var-file="var.tfvars" #-var-file="var.tfvars"
 fi
