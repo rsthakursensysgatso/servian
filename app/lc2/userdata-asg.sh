@@ -19,7 +19,7 @@ privip=`ec2metadata --local-ipv4`
 
 #cd TechChallengeApp/;sudo ./build.sh;cd dist;
 sudo git clone https://github.com/servian/TechChallengeApp.git
-sudo cd TechChallengeApp/
+cd TechChallengeApp/
 export RELEASE_NUMBER="$(cat cmd/root.go |grep Version|awk '{print $2}'|cut -d '"' -f2)"
 cd ..
 aws s3 cp  s3://app_artifact_bucket/v${RELEASE_NUMBER}.zip .
