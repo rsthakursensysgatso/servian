@@ -134,6 +134,8 @@ jobs:
            name: "Deploy Infra"
            command: |
             echo `pwd`
+            which sh
+            which bash
             apt-get update; apt-get  -y install zip awscli  dos2unix unzip
             mkdir /root/.aws/
             echo "[default]" > /root/.aws/config
