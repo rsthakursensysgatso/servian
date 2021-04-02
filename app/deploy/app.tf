@@ -66,7 +66,7 @@ resource "aws_subnet" "db_subnet_2" {
 
 ### SECURITY GROUP
 resource "aws_security_group" "db" {
-  name   = "db-secgroup"
+  name   = "DB-SG"
   vpc_id = aws_vpc.app_vpc.id
 
   # TCP access only from APP subnet at port 5432
@@ -92,7 +92,7 @@ resource "aws_security_group" "db" {
 ###### Provision RDS Postgres Database
 # Create DB subnet group
 resource "aws_db_subnet_group" "db_subnet" {
-  name       = "app_db_subnet"
+  name       = "app_db_subnet_group"
   subnet_ids = [aws_subnet.db_subnet_1.id, aws_subnet.db_subnet_2.id]
   tags = {
   Name  = "App DB"  
@@ -238,7 +238,7 @@ resource "aws_route_table_association" "app-subnet2-routes" {
 
 #Private access for APP subnet
 resource "aws_security_group" "app" {
-  name   = "app-secgroup"
+  name   = "APP-PRIVATE-SG"
   vpc_id = aws_vpc.app_vpc.id
 
   # http access from application load balancer
@@ -341,7 +341,7 @@ resource "aws_nat_gateway" "nat-gw" {
 #APP Security Group
 
 resource "aws_security_group" "app_asg" {
-  name        = "app_asg"
+  name        = "APP Security Group"
   description = "Allow HTTP from Load Balancer"
   vpc_id      = aws_vpc.app_vpc.id
 
@@ -371,7 +371,7 @@ resource "aws_security_group" "app_asg" {
 #LoadBalancer sg
 
 resource "aws_security_group" "lb_asg" {
-  name        = "lb server"
+  name        = "ALB Security Group"
   description = "Allow HTTP  Traffic from Internet to Load Balancer"
   vpc_id      = aws_vpc.app_vpc.id
 
