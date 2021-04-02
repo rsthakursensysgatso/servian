@@ -350,7 +350,7 @@ resource "aws_security_group" "app_asg" {
     to_port   = 3000
     protocol  = "tcp"
     /*      cidr_blocks = ["0.0.0.0/0"] address allow from lB security group only*/
-    security_groups = [aws_security_group.lb_asg.id]
+    prefix_list_ids  = [aws_security_group.lb_asg.id]
   }
 
 
@@ -388,7 +388,7 @@ resource "aws_security_group" "lb_asg" {
     from_port   = 3000
     to_port     = 3000
     protocol    = "tcp"
-    security_groups = [aws_security_group.app_asg.id]
+    prefix_list_ids  = [aws_security_group.app_asg.id]
   }
 
 
@@ -530,7 +530,7 @@ resource "aws_lb" "app-alb" {
   subnets            = [aws_subnet.pub_subnet_1.id, aws_subnet.pub_subnet_2.id]
   internal           = false
   load_balancer_type = "application"
-  security_groups    = [aws_security_group.lb_asg.id]
+  security_groups     = [aws_security_group.lb_asg.id]
 
   tags = {
     Name = "APP ALB"
