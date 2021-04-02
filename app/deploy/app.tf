@@ -564,7 +564,7 @@ resource "aws_lb_listener" "app-alb-Listener" {
 #######################Auto scaling Policy for APP-ASG ##########
 
 resource "aws_autoscaling_policy" "agents-scale-up-cpu" {
-    name                   = "agents-scale-up"
+    name                   = "agents-scale-up-cpu"
     scaling_adjustment     = 1
     adjustment_type        = "ChangeInCapacity"
     cooldown               = 300
@@ -572,7 +572,7 @@ resource "aws_autoscaling_policy" "agents-scale-up-cpu" {
 }
 
 resource "aws_autoscaling_policy" "agents-scale-down-cpu" {
-    name                   = "agents-scale-down"
+    name                   = "agents-scale-down-cpu"
     scaling_adjustment     = -1
     adjustment_type        = "ChangeInCapacity"
     cooldown               = 300
@@ -582,7 +582,7 @@ resource "aws_autoscaling_policy" "agents-scale-down-cpu" {
 
 
 resource "aws_autoscaling_policy" "agents-scale-up-mem" {
-    name                   = "agents-scale-up"
+    name                   = "agents-scale-up-mem"
     scaling_adjustment     = 1
     adjustment_type        = "ChangeInCapacity"
     cooldown               = 300
@@ -590,7 +590,7 @@ resource "aws_autoscaling_policy" "agents-scale-up-mem" {
 }
 
 resource "aws_autoscaling_policy" "agents-scale-down-mem" {
-    name                   = "agents-scale-down"
+    name                   = "agents-scale-down-mem"
     scaling_adjustment     = -1
     adjustment_type        = "ChangeInCapacity"
     cooldown               = 300
