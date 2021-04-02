@@ -151,6 +151,9 @@ jobs:
             cp terraform /bin          
             cd app
             sed -i "s/app_artifact_bucket/$app_artifact_bucket/g" deploy/userdata-asg.sh
+            sed -i  "s/aws-region/$aws_region/g" deploy/app.tf
+            sed -i  "s/aws-region/$aws_region/g" deploy/userdata-asg.sh
+            sed -i  "s/aws-region/$aws_region/g" deploy.sh
             #sed -i "s/app_artifact_bucket/$app_artifact_bucket/g" lc1/userdata-asg.sh
             #sed -i "s/app_artifact_bucket/$app_artifact_bucket/g" lc2/userdata-asg.sh
             chmod +x deploy.sh
