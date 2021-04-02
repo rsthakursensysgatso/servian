@@ -87,6 +87,9 @@ resource "aws_security_group" "db" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+tags = {
+ Name = "Database Security Group"
+}
 }
 
 ###### Provision RDS Postgres Database
@@ -256,7 +259,7 @@ resource "aws_security_group" "app" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   tags = {
-  Name = "App Subnet Security Group"
+  Name = "App Private Sub Security Group"
 }
 }
 
@@ -362,7 +365,7 @@ resource "aws_security_group" "app_asg" {
   }
 
   tags = {
-    Name = "App Subnet Security Group"
+    Name = "App  Security Group"
   }
 
 }
@@ -401,7 +404,7 @@ resource "aws_security_group" "lb_asg" {
   }
 
   tags = {
-    Name = "Application Load Balancer Security Group"
+    Name = "ALB Security Group"
   }
 
 }
