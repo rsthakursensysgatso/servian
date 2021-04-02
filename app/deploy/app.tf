@@ -507,7 +507,7 @@ resource "aws_launch_configuration" "APP-LC" {
 resource "aws_autoscaling_group" "APP-ASG" {
   name                      = "APP-ASG"
   depends_on                = ["aws_launch_configuration.APP-LC", "aws_db_instance.app_db"]
-  vpc_zone_identifier       = [aws_subnet.wp_subnet_1.id, aws_subnet.wp_subnet_2.id]
+  vpc_zone_identifier       = [aws_subnet.app_subnet_1.id, aws_subnet.app_subnet_2.id]
   max_size                  = 3
   min_size                  = 2
   health_check_grace_period = 300
@@ -574,9 +574,6 @@ resource "aws_lb_listener" "app-alb-Listener" {
     target_group_arn = aws_lb_target_group.APP-TargetGroup.arn
     type             = "forward"
   }
-tags = {
-  Name = "APP Target Group"
-}
 }
 
 
