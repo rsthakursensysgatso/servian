@@ -300,17 +300,11 @@ resource "aws_route_table" "public-routes" {
 resource "aws_route_table_association" "public-subnet-routes-1" {
   subnet_id      = aws_subnet.pub_subnet_1.id
   route_table_id = aws_route_table.public-routes.id
-  tags = {
-  Name = "Public Subnet route association"
- }
 }
 
 resource "aws_route_table_association" "public-subnet-routes-2" {
   subnet_id      = aws_subnet.pub_subnet_2.id
   route_table_id = aws_route_table.public-routes.id
-  tags = {
-  Name = "Public Subnet route association"
-}
 }
 
 # NAT Gateway configuration for private subnetss
@@ -356,7 +350,7 @@ resource "aws_security_group" "app_asg" {
     to_port   = 3000
     protocol  = "tcp"
     /*      cidr_blocks = ["0.0.0.0/0"] address allow from lB security group only*/
-    cidr_blocks = ["aws_security_group.lb_asg.id"]
+    security_group_name = [aws_security_group.lb_asg.name]
   }
 
 
@@ -394,7 +388,7 @@ resource "aws_security_group" "lb_asg" {
     from_port   = 3000
     to_port     = 3000
     protocol    = "tcp"
-    cidr_blocks = ["aws_security_group.app_asg.id"]
+    security_group_name = [aws_security_group.app_asg.name]
   }
 
 
