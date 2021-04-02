@@ -66,7 +66,7 @@ resource "aws_subnet" "db_subnet_2" {
 
 ### SECURITY GROUP
 resource "aws_security_group" "db" {
-  name   = "DB-SG"
+  name   = "Database SG"
   vpc_id = aws_vpc.app_vpc.id
 
   # TCP access only from APP subnet at port 5432
@@ -241,7 +241,7 @@ resource "aws_route_table_association" "app-subnet2-routes" {
 
 #Private access for APP subnet
 resource "aws_security_group" "app" {
-  name   = "APP-PRIVATE-SG"
+  name   = "APP Private SG"
   vpc_id = aws_vpc.app_vpc.id
 
   # http access from application load balancer
@@ -259,7 +259,7 @@ resource "aws_security_group" "app" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   tags = {
-  Name = "App Private Sub Security Group"
+  Name = "App-Priv-SG"
 }
 }
 
@@ -365,7 +365,7 @@ resource "aws_security_group" "app_asg" {
   }
 
   tags = {
-    Name = "App  Security Group"
+    Name = "App SG"
   }
 
 }
@@ -404,7 +404,7 @@ resource "aws_security_group" "lb_asg" {
   }
 
   tags = {
-    Name = "ALB Security Group"
+    Name = "ALB SG"
   }
 
 }
