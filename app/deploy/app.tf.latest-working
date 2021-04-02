@@ -8,7 +8,7 @@ terraform {
   backend "s3" {
     bucket = "app-terraform-state-bucket"
     key    = "terraform.tfstate"
-    region = "aws-region"
+    region = "us-east-1"
   }
 }
 
@@ -20,16 +20,13 @@ resource "aws_vpc" "app_vpc" {
   enable_dns_support   = true
   enable_dns_hostnames = true
   tags = {
-    Name = "Servian App VPC"
+    Name = "WP Solution VPC"
   }
 }
 
 # create igw
 resource "aws_internet_gateway" "app_igw" {
   vpc_id = aws_vpc.app_vpc.id
-  tags = {
-    Name = "Servian APP VPC Internet Gateway"
-}
 }
 
 # add dhcp options
@@ -45,12 +42,12 @@ resource "aws_vpc_dhcp_options_association" "dns_resolver" {
 
 
 
-#### DATABASE SUBNETS
+#### DB subnets
 resource "aws_subnet" "db_subnet_1" {
   vpc_id     = aws_vpc.app_vpc.id
   cidr_block = var.aws_db_subnet_1_cidr
   tags = {
-    Name = "DB subnet 1"
+    Name = "WordPress subnet 1"
   }
   availability_zone = var.az_zone_1
 }
@@ -59,7 +56,7 @@ resource "aws_subnet" "db_subnet_2" {
   vpc_id     = aws_vpc.app_vpc.id
   cidr_block = var.aws_db_subnet_2_cidr
   tags = {
-    Name = "DB subnet 2"
+    Name = "WordPress subnet 2"
   }
   availability_zone = var.az_zone_2
 }
@@ -69,14 +66,14 @@ resource "aws_security_group" "db" {
   name   = "db-secgroup"
   vpc_id = aws_vpc.app_vpc.id
 
-  # TCP access only from APP subnet at port 5432
+  # TCP access only from wp subnet and vpn
   ingress {
     from_port = 5432
     to_port   = 5432
     protocol  = "tcp"
     cidr_blocks = [
-      var.aws_app_subnet_1_cidr, 
-      var.aws_app_subnet_2_cidr 
+      var.aws_app_subnet_1_cidr, # App Subnet 1
+      var.aws_app_subnet_2_cidr  # App Subnet 2
     ]
   }
 
@@ -89,14 +86,11 @@ resource "aws_security_group" "db" {
   }
 }
 
-###### Provision RDS Postgres Database
-# Create DB subnet group
+###### provision RDS
+# make db subnet group
 resource "aws_db_subnet_group" "db_subnet" {
-  name       = "app_db_subnet"
+  name       = "db_subnet"
   subnet_ids = [aws_subnet.db_subnet_1.id, aws_subnet.db_subnet_2.id]
-  tags = {
-  Name  = "App DB"  
-}
 }
 
 resource "random_password" "password" {
@@ -115,7 +109,7 @@ resource "aws_ssm_parameter" "db_username" {
   value       =  var.db_user
 
   tags = {
-    Name      = "APP DB"
+    environment = "app_db"
   }
 }
 
@@ -126,7 +120,7 @@ resource "aws_ssm_parameter" "db_password" {
   value       = random_password.password.result
 
   tags = {
-    Name = "APP DB"
+    environment = "app_db"
   }
 }
 
@@ -138,7 +132,7 @@ resource "aws_ssm_parameter" "db_name" {
   value       = var.db_name
 
   tags = {
-    Name = "App DB"
+    environment = "app_db"
   }
 }
 
@@ -150,7 +144,7 @@ resource "aws_ssm_parameter" "db_hostname" {
   value       = aws_db_instance.app_db.address
 
   tags = {
-    Name = "APP DB"
+    environment = "app_db"
   }
 }
 
@@ -168,35 +162,31 @@ resource "aws_db_instance" "app_db" {
   engine_version         = var.db_engine_version
   db_subnet_group_name   = aws_db_subnet_group.db_subnet.name
   vpc_security_group_ids = [aws_security_group.db.id]
-  tags = {
-   Name = "APP DB"
-
-}
 }
 
 
-#Provision APP Subnet
-resource "aws_subnet" "app_subnet_1" {
+#provision wordpress subnet
+resource "aws_subnet" "wp_subnet_1" {
   vpc_id     = aws_vpc.app_vpc.id
   cidr_block = var.aws_app_subnet_1_cidr
   tags = {
-    Name = "APP subnet"
+    Name = "WordPress subnet"
   }
   availability_zone = var.az_zone_1
 }
 
 
-resource "aws_subnet" "app_subnet_2" {
+resource "aws_subnet" "wp_subnet_2" {
   vpc_id     = aws_vpc.app_vpc.id
   cidr_block = var.aws_app_subnet_2_cidr
   tags = {
-    Name = "APP subnet"
+    Name = "WordPress subnet"
   }
   availability_zone = var.az_zone_2
 }
 
-# Route Table with NAT gateway
-resource "aws_route_table" "app-subnet-routes" {
+# WP subnet routes for NAT
+resource "aws_route_table" "wp-subnet-routes" {
   vpc_id = aws_vpc.app_vpc.id
   route {
     cidr_block     = "0.0.0.0/0"
@@ -204,7 +194,7 @@ resource "aws_route_table" "app-subnet-routes" {
   }
 
   tags = {
-    Name = "APP-subnet-routes-1"
+    Name = "web-subnet-routes-1"
   }
 }
 
@@ -216,32 +206,39 @@ resource "aws_route_table" "app-subnet-routes" {
     }
 
     tags = {
-        Name = "APP-subnet-routes"
+        Name = "web-subnet-routes"
     }
 }*/
 
-# Route Table Association with APP subnet
 
-resource "aws_route_table_association" "app-subnet1-routes" {
-  subnet_id      = aws_subnet.app_subnet_1.id
-  route_table_id = aws_route_table.app-subnet-routes.id
+resource "aws_route_table_association" "wp-subnet1-routes" {
+  subnet_id      = aws_subnet.wp_subnet_1.id
+  route_table_id = aws_route_table.wp-subnet-routes.id
 }
 
-resource "aws_route_table_association" "app-subnet2-routes" {
-  subnet_id      = aws_subnet.app_subnet_2.id
-  route_table_id = aws_route_table.app-subnet-routes.id
+resource "aws_route_table_association" "wp-subnet2-routes" {
+  subnet_id      = aws_subnet.wp_subnet_2.id
+  route_table_id = aws_route_table.wp-subnet-routes.id
 }
 
 
 
 ### SECURITY GROUPS #########################
 
-#Private access for APP subnet
-resource "aws_security_group" "app" {
-  name   = "app-secgroup"
+#Private access for WP subnet
+resource "aws_security_group" "wp" {
+  name   = "wp-secgroup"
   vpc_id = aws_vpc.app_vpc.id
 
-  # http access from application load balancer
+  # ssh access from bastion
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "TCP"
+    cidr_blocks = [var.aws_pub_subnet_1_cidr, var.aws_pub_subnet_2_cidr]
+  }
+
+  # http access from load balancer
   ingress {
     from_port   = 3000
     to_port     = 3000
@@ -255,12 +252,9 @@ resource "aws_security_group" "app" {
     to_port     = 0
     cidr_blocks = ["0.0.0.0/0"]
   }
-  tags = {
-  Name = "App Subnet Security Group"
-}
 }
 
-# Public Subnet Groups required by load balancer
+
 
 resource "aws_subnet" "pub_subnet_1" {
 
@@ -272,6 +266,7 @@ resource "aws_subnet" "pub_subnet_1" {
   availability_zone = var.az_zone_1
 }
 
+#provision public subnet 2 (Required for load balancer)
 resource "aws_subnet" "pub_subnet_2" {
 
   vpc_id     = aws_vpc.app_vpc.id
@@ -283,7 +278,6 @@ resource "aws_subnet" "pub_subnet_2" {
 }
 
 
-# Route with internet gateway attached
 
 resource "aws_route_table" "public-routes" {
   vpc_id = aws_vpc.app_vpc.id
@@ -291,44 +285,27 @@ resource "aws_route_table" "public-routes" {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.app_igw.id
   }
- tags = {
-   Name = "App public route table"
 }
-}
-
-# Route table association with Public Subnet
 resource "aws_route_table_association" "public-subnet-routes-1" {
   subnet_id      = aws_subnet.pub_subnet_1.id
   route_table_id = aws_route_table.public-routes.id
-  tags = {
-  Name = "Public Subnet route association"
- }
 }
 
 resource "aws_route_table_association" "public-subnet-routes-2" {
   subnet_id      = aws_subnet.pub_subnet_2.id
   route_table_id = aws_route_table.public-routes.id
-  tags = {
-  Name = "Public Subnet route association"
-}
 }
 
 # NAT Gateway configuration for private subnetss
 resource "aws_eip" "nat-eip" {
   vpc        = true
   depends_on = ["aws_internet_gateway.app_igw", "aws_vpc_dhcp_options_association.dns_resolver"]
-  tags = {
-  Name = "Nat Gateway EIP"
-}
 }
 
 resource "aws_nat_gateway" "nat-gw" {
   allocation_id = aws_eip.nat-eip.id
   subnet_id     = aws_subnet.pub_subnet_1.id
   depends_on    = ["aws_internet_gateway.app_igw"]
-  tags = {
-  Name = "Nat Gateway"
-}
 }
 
 /* resource "aws_eip" "nat-eip1" {
@@ -344,7 +321,7 @@ resource "aws_nat_gateway" "nat-gw" {
 
 
 
-#APP Security Group
+#APP sg
 
 resource "aws_security_group" "app_asg" {
   name        = "app_asg"
@@ -356,9 +333,16 @@ resource "aws_security_group" "app_asg" {
     to_port   = 3000
     protocol  = "tcp"
     /*      cidr_blocks = ["0.0.0.0/0"] address allow from lB security group only*/
-    cidr_blocks = [aws_security_group.lb_asg.id]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+
+  }
 
   egress {
     from_port   = 0 # need to address
@@ -368,7 +352,7 @@ resource "aws_security_group" "app_asg" {
   }
 
   tags = {
-    Name = "App Subnet Security Group"
+    Name = "app asg"
   }
 
 }
@@ -394,20 +378,20 @@ resource "aws_security_group" "lb_asg" {
     from_port   = 3000
     to_port     = 3000
     protocol    = "tcp"
-    cidr_blocks = [aws_security_group.app_asg.id]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
 
 
   egress {
-    from_port   = 0 
+    from_port   = 0 # need to address
     to_port     = 65535
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
   tags = {
-    Name = "Application Load Balancer Security Group"
+    Name = "lb asg"
   }
 
 }
@@ -438,10 +422,6 @@ resource "aws_iam_role" "cwdbrole" {
   ]
 }
 EOF
-
-tags = {
- Name = "IAM Role for App"
-}
 }
 
 resource "aws_iam_policy" "policy" {
@@ -487,10 +467,6 @@ resource "aws_iam_policy" "policy" {
 }
 
 EOF
-tags = {
- Name = "Custom Policy for App"
-}
-
 }
 
 resource "aws_iam_role_policy_attachment" "cw_db_policy_attach" {
@@ -505,6 +481,8 @@ resource "aws_launch_configuration" "APP-LC" {
   image_id             = var.image_id
   instance_type        = "t2.micro"
   iam_instance_profile = "cwdb_iam_profile"
+//  key_name             = "serkey"
+/*  key_name           = "serkey" addressed required */
   security_groups = [aws_security_group.app_asg.id]
   user_data       = file("/root/project/app/deploy/userdata-asg.sh")
   lifecycle { create_before_destroy = true }
@@ -539,7 +517,7 @@ resource "aws_lb" "app-alb" {
   security_groups    = [aws_security_group.lb_asg.id]
 
   tags = {
-    Name = "APP ALB"
+    Name = "APP LB"
   }
 }
 
@@ -580,9 +558,6 @@ resource "aws_lb_listener" "app-alb-Listener" {
     target_group_arn = aws_lb_target_group.APP-TargetGroup.arn
     type             = "forward"
   }
-tags = {
-  Name = "APP Target Group"
-}
 }
 
 

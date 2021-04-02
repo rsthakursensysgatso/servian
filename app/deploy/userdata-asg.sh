@@ -9,10 +9,10 @@ sudo cp CloudWatchAgentConfig.json /etc/cloudwatch_agent.json
 sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c file:/etc/cloudwatch_agent.json -s
 
 
-dbuser=`aws ssm get-parameter     --name "dbusername"     --with-decryption --region us-east-1 --output text --query Parameter.Value`
-dbpassword=`aws ssm get-parameter     --name "dbpassword"     --with-decryption --region us-east-1 --output text --query Parameter.Value`
-dbname=`aws ssm get-parameter     --name "dbname"     --with-decryption --region us-east-1 --output text --query Parameter.Value`
-dbhostname=`aws ssm get-parameter     --name "dbhostname"     --with-decryption --region us-east-1 --output text --query Parameter.Value`
+dbuser=`aws ssm get-parameter     --name "dbusername"     --with-decryption --region aws-region --output text --query Parameter.Value`
+dbpassword=`aws ssm get-parameter     --name "dbpassword"     --with-decryption --region aws-region --output text --query Parameter.Value`
+dbname=`aws ssm get-parameter     --name "dbname"     --with-decryption --region aws-region --output text --query Parameter.Value`
+dbhostname=`aws ssm get-parameter     --name "dbhostname"     --with-decryption --region aws-region --output text --query Parameter.Value`
 privip=`ec2metadata --local-ipv4`
 
 
