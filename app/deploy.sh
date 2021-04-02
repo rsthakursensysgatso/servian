@@ -6,8 +6,7 @@ asg="APP-ASG"
 #lc=`aws autoscaling describe-launch-configurations --region us-east-1|grep LaunchConfigurationName|awk '{print $2}'|cut -d '"' -f2`
 lc=`aws autoscaling describe-launch-configurations --region us-east-1|grep LaunchConfigurationName|awk '{print $2}'|tail -1|cut -d '"' -f2`
 
-if [[ "$lc" == "$lcfg1" ]]
-then
+if [ "$lc" == "$lcfg1" ];then
 
 	vpc=`aws ec2 describe-vpcs --filters Name=tag:Name,Values='WP Solution VPC' --query 'Vpcs[*].VpcId' --output text`
 	sg=`aws ec2  describe-security-groups --filter Name=vpc-id,Values=$vpc  Name=group-name,Values=app_asg --region us-east-1 --query 'SecurityGroups[*].[GroupId]' --output text`
@@ -19,8 +18,7 @@ then
 	aws autoscaling delete-launch-configuration --launch-configuration-name $lcfg1
 
 
-elif [[ "$lc" == "$lcfg2" ]]
-then
+elif [ "$lc" == "$lcfg2" ];then
 
 	vpc=`aws ec2 describe-vpcs --filters Name=tag:Name,Values='WP Solution VPC' --query 'Vpcs[*].VpcId' --output text`
 	sg=`aws ec2  describe-security-groups --filter Name=vpc-id,Values=$vpc  Name=group-name,Values=app_asg --region us-east-1 --query 'SecurityGroups[*].[GroupId]' --output text`
