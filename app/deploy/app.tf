@@ -563,7 +563,7 @@ resource "aws_lb_listener" "app-alb-Listener" {
 
 #######################Auto scaling Policy for APP-ASG ##########
 
-resource "aws_autoscaling_policy" "agents-scale-up" {
+resource "aws_autoscaling_policy" "agents-scale-up-cpu" {
     name                   = "agents-scale-up"
     scaling_adjustment     = 1
     adjustment_type        = "ChangeInCapacity"
@@ -571,7 +571,25 @@ resource "aws_autoscaling_policy" "agents-scale-up" {
     autoscaling_group_name = aws_autoscaling_group.APP-ASG.name
 }
 
-resource "aws_autoscaling_policy" "agents-scale-down" {
+resource "aws_autoscaling_policy" "agents-scale-down-cpu" {
+    name                   = "agents-scale-down"
+    scaling_adjustment     = -1
+    adjustment_type        = "ChangeInCapacity"
+    cooldown               = 300
+    autoscaling_group_name = aws_autoscaling_group.APP-ASG.name
+}
+
+
+
+resource "aws_autoscaling_policy" "agents-scale-up-mem" {
+    name                   = "agents-scale-up"
+    scaling_adjustment     = 1
+    adjustment_type        = "ChangeInCapacity"
+    cooldown               = 300
+    autoscaling_group_name = aws_autoscaling_group.APP-ASG.name
+}
+
+resource "aws_autoscaling_policy" "agents-scale-down-mem" {
     name                   = "agents-scale-down"
     scaling_adjustment     = -1
     adjustment_type        = "ChangeInCapacity"
@@ -594,7 +612,7 @@ resource "aws_cloudwatch_metric_alarm" "memory-high" {
     threshold           = "80"
     alarm_description   = "This metric monitors ec2 memory for high utilization"
     alarm_actions = [
-        aws_autoscaling_policy.agents-scale-up.arn
+        aws_autoscaling_policy.agents-scale-up-mem.arn
     ]
     dimensions = {
         AutoScalingGroupName = aws_autoscaling_group.APP-ASG.name
@@ -612,7 +630,7 @@ resource "aws_cloudwatch_metric_alarm" "memory-low" {
     threshold           = "60"
     alarm_description   = "This metric monitors ec2 memory for low utilization"
     alarm_actions = [
-        aws_autoscaling_policy.agents-scale-down.arn
+        aws_autoscaling_policy.agents-scale-down-mem.arn
     ]
     dimensions = {
         AutoScalingGroupName = aws_autoscaling_group.APP-ASG.name
@@ -634,7 +652,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu-high" {
         AutoScalingGroupName = aws_autoscaling_group.APP-ASG.name
     }
     alarm_description = "This metric monitor ec2 cpu for high utilization"
-    alarm_actions     = [aws_autoscaling_policy.agents-scale-up.arn]
+    alarm_actions     = [aws_autoscaling_policy.agents-scale-up-cpu.arn]
 }
 
 
@@ -653,9 +671,8 @@ resource "aws_cloudwatch_metric_alarm" "cpu-low" {
     AutoScalingGroupName = aws_autoscaling_group.APP-ASG.name
   }
 
-  alarm_actions = [aws_autoscaling_policy.agents-scale-down.arn]
+  alarm_actions = [aws_autoscaling_policy.agents-scale-down-cpu.arn]
 }
-
 
 ################ Output ALB & RDS Endpoint ###########
 
