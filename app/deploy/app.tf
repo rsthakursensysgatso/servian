@@ -356,7 +356,7 @@ resource "aws_security_group" "app_asg" {
     to_port   = 3000
     protocol  = "tcp"
     /*      cidr_blocks = ["0.0.0.0/0"] address allow from lB security group only*/
-    cidr_blocks = [aws_security_group.lb_asg.id]
+    cidr_blocks = ["aws_security_group.lb_asg.id"]
   }
 
 
@@ -394,7 +394,7 @@ resource "aws_security_group" "lb_asg" {
     from_port   = 3000
     to_port     = 3000
     protocol    = "tcp"
-    cidr_blocks = [aws_security_group.app_asg.id]
+    cidr_blocks = ["aws_security_group.app_asg.id"]
   }
 
 
