@@ -28,6 +28,7 @@ elif [ "$lc" == "$lcfg2" ];then
 	sleep 60
 	aws autoscaling delete-launch-configuration --launch-configuration-name $lcfg2
 
+
 else
         cd deploy;terraform init;terraform plan ;terraform apply --auto-approve  #-var-file="var.tfvars" #-var-file="var.tfvars"
 	sleep 120
