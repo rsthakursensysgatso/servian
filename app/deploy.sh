@@ -27,7 +27,7 @@ elif [ "$lc" == "$lcfg2" ];then
 	aws autoscaling update-auto-scaling-group --auto-scaling-group-name $asg --launch-configuration-name $lcfg1 --min-size 2 --max-size 3 --desired-capacity 2
 	sleep 60
 	aws autoscaling delete-launch-configuration --launch-configuration-name $lcfg2
-	
+
 else
         cd deploy;terraform init;terraform plan ;terraform apply --auto-approve  #-var-file="var.tfvars" #-var-file="var.tfvars"
 	sleep 120
