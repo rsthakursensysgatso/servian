@@ -223,6 +223,19 @@ resource "aws_route_table" "app-subnet-routes" {
   }
 }
 
+resource "aws_route_table" "app-subnet-routes-2" {
+  vpc_id = aws_vpc.app_vpc.id
+  route {
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.nat-gw1.id
+  }
+
+  tags = {
+    Name = "RT NAT Gateway 2"
+  }
+}
+
+
 /*resource "aws_route_table" "wp-subnet-routes1" {
     vpc_id = aws_vpc.app_vpc.id
     route {
@@ -244,7 +257,7 @@ resource "aws_route_table_association" "app-subnet1-routes" {
 
 resource "aws_route_table_association" "app-subnet2-routes" {
   subnet_id      = aws_subnet.app_subnet_2.id
-  route_table_id = aws_route_table.app-subnet-routes.id
+  route_table_id = aws_route_table.app-subnet-routes-2.id
 }
 
 
@@ -334,6 +347,23 @@ resource "aws_eip" "nat-eip" {
 resource "aws_nat_gateway" "nat-gw" {
   allocation_id = aws_eip.nat-eip.id
   subnet_id     = aws_subnet.pub_subnet_1.id
+  depends_on    = ["aws_internet_gateway.app_igw"]
+  tags = {
+  Name = "Nat Gateway"
+}
+}
+
+resource "aws_eip" "nat-eip-2" {
+  vpc        = true
+  depends_on = ["aws_internet_gateway.app_igw", "aws_vpc_dhcp_options_association.dns_resolver"]
+  tags = {
+  Name = "Nat Gateway EIP 2"
+}
+}
+
+resource "aws_nat_gateway" "nat-gw1" {
+  allocation_id = aws_eip.nat-eip-2.id
+  subnet_id     = aws_subnet.pub_subnet_2.id
   depends_on    = ["aws_internet_gateway.app_igw"]
   tags = {
   Name = "Nat Gateway"
