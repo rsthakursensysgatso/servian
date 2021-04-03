@@ -348,14 +348,6 @@ resource "aws_security_group" "app_asg" {
   description = "Allow HTTP from Load Balancer"
   vpc_id      = aws_vpc.app_vpc.id
 
-/*  ingress {
-    from_port = 3000
-    to_port   = 3000
-    protocol  = "tcp"
-    /*      cidr_blocks = ["0.0.0.0/0"] address allow from lB security group only*/
-    cidr_blocks  = ["0.0.0.0/0"]
-  } */
-
 
   egress {
     from_port   = 0 # need to address
@@ -396,14 +388,6 @@ resource "aws_security_group" "lb_asg" {
     cidr_blocks = ["0.0.0.0/0"]
 
   }
-
-/*  ingress {
-    from_port   = 3000
-    to_port     = 3000
-    protocol    = "tcp"
-    cidr_blocks  = ["0.0.0.0/0"]
-  }
-*/
 
 
   egress {
