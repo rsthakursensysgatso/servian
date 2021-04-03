@@ -348,13 +348,13 @@ resource "aws_security_group" "app_asg" {
   description = "Allow HTTP from Load Balancer"
   vpc_id      = aws_vpc.app_vpc.id
 
-  ingress {
+/*  ingress {
     from_port = 3000
     to_port   = 3000
     protocol  = "tcp"
     /*      cidr_blocks = ["0.0.0.0/0"] address allow from lB security group only*/
     cidr_blocks  = ["0.0.0.0/0"]
-  }
+  } */
 
 
   egress {
@@ -368,6 +368,16 @@ resource "aws_security_group" "app_asg" {
     Name = "App SG"
   }
 
+}
+
+
+resource "aws_security_group_rule" "app_lb_ingress_rule" {
+  type              = "ingress"
+  from_port         = 3000
+  to_port           = 3000
+  protocol          = "tcp"
+  security_group_id = aws_security_group.app_asg.id
+  source_security_group_id   = aws_security_group.lb_asg.id
 }
 
 
@@ -387,13 +397,13 @@ resource "aws_security_group" "lb_asg" {
 
   }
 
-  ingress {
+/*  ingress {
     from_port   = 3000
     to_port     = 3000
     protocol    = "tcp"
     cidr_blocks  = ["0.0.0.0/0"]
   }
-
+*/
 
 
   egress {
@@ -407,6 +417,16 @@ resource "aws_security_group" "lb_asg" {
     Name = "ALB SG"
   }
 
+}
+
+
+resource "aws_security_group_rule" "lb_app_ingress_rule" {
+  type              = "ingress"
+  from_port         = 3000
+  to_port           = 3000
+  protocol          = "tcp"
+  security_group_id = aws_security_group.lb_asg.id
+  source_security_group_id   = aws_security_group.app_asg.id
 }
 
 
