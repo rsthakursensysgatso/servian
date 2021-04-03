@@ -95,8 +95,8 @@ tags = {
 
 resource "aws_security_group_rule" "db_app_ingress_rule" {
   type              = "ingress"
-  from_port         = 3000
-  to_port           = 3000
+  from_port         = 5432
+  to_port           = 5432
   protocol          = "tcp"
   security_group_id = aws_security_group.db.id
   source_security_group_id   = aws_security_group.app_asg.id
