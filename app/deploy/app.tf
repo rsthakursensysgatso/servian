@@ -270,7 +270,7 @@ resource "aws_subnet" "pub_subnet_1" {
   vpc_id     = aws_vpc.app_vpc.id
   cidr_block = var.aws_pub_subnet_1_cidr
   tags = {
-    Name = "public subnet 1"
+    Name = "Public Subnet 1"
   }
   availability_zone = var.az_zone_1
 }
@@ -280,7 +280,7 @@ resource "aws_subnet" "pub_subnet_2" {
   vpc_id     = aws_vpc.app_vpc.id
   cidr_block = var.aws_pub_subnet_2_cidr
   tags = {
-    Name = "public subnet 2"
+    Name = "Public Subnet 2"
   }
   availability_zone = var.az_zone_2
 }
