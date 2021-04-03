@@ -66,7 +66,7 @@ resource "aws_subnet" "db_subnet_2" {
 
 ### SECURITY GROUP
 resource "aws_security_group" "db" {
-  name   = "Database SG"
+  name   = "Database Security Group"
   vpc_id = aws_vpc.app_vpc.id
 
   # TCP access only from APP subnet at port 5432
@@ -88,7 +88,7 @@ resource "aws_security_group" "db" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 tags = {
- Name = "Database Security Group"
+ Name = "DB SG"
 }
 }
 
@@ -259,7 +259,7 @@ resource "aws_security_group" "app" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   tags = {
-  Name = "App-Priv-SG"
+  Name = "App Priv SG"
 }
 }
 
