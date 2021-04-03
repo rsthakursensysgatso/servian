@@ -420,14 +420,14 @@ resource "aws_security_group" "lb_asg" {
 }
 
 
-resource "aws_security_group_rule" "lb_app_ingress_rule" {
+/*resource "aws_security_group_rule" "lb_app_ingress_rule" {
   type              = "ingress"
   from_port         = 3000
   to_port           = 3000
   protocol          = "tcp"
   security_group_id = aws_security_group.lb_asg.id
   source_security_group_id   = aws_security_group.app_asg.id
-}
+}*/
 
 
 ############ LAUCH Config & Auto Scaling Group ########
