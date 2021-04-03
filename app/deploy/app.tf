@@ -69,7 +69,7 @@ resource "aws_security_group" "db" {
   name   = "Database Security Group"
   vpc_id = aws_vpc.app_vpc.id
 
-  # TCP access only from APP subnet at port 5432
+/*  # TCP access only from APP subnet at port 5432
   ingress {
     from_port = 5432
     to_port   = 5432
@@ -78,7 +78,7 @@ resource "aws_security_group" "db" {
       var.aws_app_subnet_1_cidr, 
       var.aws_app_subnet_2_cidr 
     ]
-  }
+  } */
 
   # Egress to everyone
   egress {
@@ -91,6 +91,18 @@ tags = {
  Name = "DB SG"
 }
 }
+
+
+resource "aws_security_group_rule" "db_app_ingress_rule" {
+  type              = "ingress"
+  from_port         = 3000
+  to_port           = 3000
+  protocol          = "tcp"
+  security_group_id = aws_security_group.db.id
+  source_security_group_id   = aws_security_group.app_asg.id
+}
+
+
 
 ###### Provision RDS Postgres Database
 # Create DB subnet group
