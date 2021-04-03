@@ -357,7 +357,7 @@ resource "aws_security_group" "app_asg" {
   }
 
   tags = {
-    Name = "App SG"
+    Name = "APP SG"
   }
 
 }
