@@ -528,7 +528,7 @@ resource "aws_autoscaling_group" "APP-ASG" {
 
   tag {
     key                 = "Name"
-    value               = "app"
+    value               = "WebApp"
     propagate_at_launch = true
   }
 }
