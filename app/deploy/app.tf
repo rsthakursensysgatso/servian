@@ -525,6 +525,12 @@ resource "aws_autoscaling_group" "APP-ASG" {
   launch_configuration = aws_launch_configuration.APP-LC.id
 //  target_group_arns         = [aws_lb_target_group.APP-TargetGroup.arn]  // Checking required
   lifecycle { create_before_destroy = true }
+
+  tag {
+    key                 = "Name"
+    value               = "app"
+    propagate_at_launch = true
+  }
 }
 
  resource "aws_autoscaling_attachment" "asg_attachment_bar" {
