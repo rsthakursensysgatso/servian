@@ -240,7 +240,7 @@ resource "aws_route_table_association" "app-subnet2-routes" {
 ### SECURITY GROUPS #########################
 
 #Private access for APP subnet
-resource "aws_security_group" "app" {
+/* resource "aws_security_group" "app" {
   name   = "APP Private SG"
   vpc_id = aws_vpc.app_vpc.id
 
@@ -261,7 +261,7 @@ resource "aws_security_group" "app" {
   tags = {
   Name = "App Priv SG"
 }
-}
+} */
 
 # Public Subnet Groups required by load balancer
 
