@@ -207,7 +207,7 @@ resource "aws_route_table" "app-subnet-routes" {
   }
 
   tags = {
-    Name = "APP-subnet-routes-1"
+    Name = "RT NAT Gateway"
   }
 }
 
@@ -295,7 +295,7 @@ resource "aws_route_table" "public-routes" {
     gateway_id = aws_internet_gateway.app_igw.id
   }
  tags = {
-   Name = "App public route table"
+   Name = "RT Internet Gateway"
 }
 }
 
