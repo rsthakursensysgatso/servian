@@ -183,6 +183,15 @@ resource "aws_db_instance" "app_db" {
   engine_version         = var.db_engine_version
   db_subnet_group_name   = aws_db_subnet_group.db_subnet.name
   vpc_security_group_ids = [aws_security_group.db.id]
+  storage_encrypted     = var.storage_encrypted
+  maintenance_window              = var.maintenance_window
+  backup_window                   = var.backup_window
+  enabled_cloudwatch_logs_exports = var.enabled_cloudwatch_logs_exports
+  backup_retention_period = var.backup_retention_period
+  skip_final_snapshot     = var.skip_final_snapshot
+  deletion_protection     = var.deletion_protection
+  multi_az                = var.multi_az
+  
   tags = {
    Name = "APP DB"
 
