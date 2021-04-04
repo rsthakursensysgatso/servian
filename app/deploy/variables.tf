@@ -56,7 +56,7 @@ variable "az_zone_2" {
 
 variable "db_class" {
   description = "Instance Type"
-  default = "db.t2.micro"
+  default = "db.t3.micro"
 }
 
 variable "db_user" {
