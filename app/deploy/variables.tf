@@ -17,7 +17,6 @@ variable "aws_db_subnet_1_cidr" {
     default = "10.0.1.0/24"
 }
 
-
 variable "aws_db_subnet_2_cidr" {
     description = "RDS Private CIDR"
     default = "10.0.2.0/24"
@@ -83,4 +82,45 @@ variable "db_engine_version" {
 variable "db_identifier" {
  description = "Database Identifier"
  default = "app-db"
+}
+
+variable "storage_encrypted" {
+ description = "DB storage encryption"
+ default= "true"
+}
+
+variable "maintenance_window" {
+ description = "Maintance Window"
+ default= "Sun:00:00-Sun:03:00"
+}
+
+variable "backup_window" {
+ description = "Backup Window"
+ default= "03:00-06:00"
+
+}
+variable "enabled_cloudwatch_logs_exports" {
+ description = "DB Cloudwatch logging"
+ default= ["postgresql", "upgrade"]
+
+}
+variable "backup_retention_period" {
+ description = "DB backup retention"
+ default= 1
+
+}
+
+variable "skip_final_snapshot" {
+ description = "DB snapshot"
+ default= "true"
+
+}
+variable "deletion_protection" {
+ description = "DB deletion protection"
+ default= "false"
+
+}
+variable "multi_az" {
+ description = "DB high availability"
+ default= "true"
 }
