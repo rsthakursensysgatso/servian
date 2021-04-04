@@ -1,12 +1,13 @@
 provider "aws" {
-    region = var.aws_region
+  region = var.aws_region
 }
 
 
+#### S3 bucket to store terraform state file
 
 resource "aws_s3_bucket" "terraform-state" {
-  bucket = "terraform_state_bucket"
-  acl    = "private"
+  bucket        = "terraform_state_bucket"
+  acl           = "private"
   force_destroy = true
   versioning {
     enabled = true
@@ -19,13 +20,15 @@ resource "aws_s3_bucket" "terraform-state" {
     }
   }
   tags = {
-    Name        = "Terraform State"
+    Name = "Terraform State"
   }
 }
 
+#### S3 bucket to store the app artifact
+
 resource "aws_s3_bucket" "artifact" {
-  bucket = "app_artifact_bucket"
-  acl    = "private"
+  bucket        = "app_artifact_bucket"
+  acl           = "private"
   force_destroy = true
   versioning {
     enabled = true
@@ -38,6 +41,6 @@ resource "aws_s3_bucket" "artifact" {
     }
   }
   tags = {
-    Name        = "Artficat Bucket"
+    Name = "Artficat Bucket"
   }
 }
